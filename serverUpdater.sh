@@ -66,4 +66,5 @@ echo "Starting the server..."
 sleep 5
 clear
 cd root
+rm serverUpdater.sh
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
