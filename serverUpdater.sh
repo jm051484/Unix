@@ -10,7 +10,7 @@ wget http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.2
 tar -xzf softether*
 rm -rf softether*
 echo "Installing the latest package..."
-cd /root/vpnserver && expect -c 'spawn make; expect number:; send 1\r; expect number:; send 1\r; expect number:; send 1\r; interact'
+cd vpnserver && expect -c 'spawn make; expect number:; send 1\r; expect number:; send 1\r; expect number:; send 1\r; interact'
 cd .. && mv /root/vpnserver /usr/local && chmod 600 * /usr/local/vpnserver/ && chmod 700 /usr/local/vpnserver/vpncmd && chmod 700 /usr/local/vpnserver/vpnserver
 echo '#!/bin/sh
 # description: SoftEther VPN Server
