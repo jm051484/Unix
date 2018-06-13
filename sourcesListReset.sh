@@ -55,3 +55,6 @@ deb http://security.ubuntu.com/ubuntu xenial-security multiverse
 ' > /root/source.listx
 
 rm -r sourcesListReset*
+clear
+echo "[ Setup Finished ]"
+echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
