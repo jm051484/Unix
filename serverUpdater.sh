@@ -2,6 +2,7 @@
 echo "Stopping the server..."
 /etc/init.d/vpnserver stop
 echo "Recovering server config..."
+mkdir serverBackup
 cd .. && cp -r /usr/local/vpnserver/*vpn_server.config /root/serverBackup/
 rm -r /etc/init.d/vpnserver
 rm -r /usr/local/vpnserver
