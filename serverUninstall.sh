@@ -1,10 +1,7 @@
 #!/bin/bash
 /etc/init.d/vpnserver stop
-#/sbin/chkconfig --del vpnserver
-rm -rf /etc/init.d/vpnserver
-rm -rf /usr/local/vpnserver
-rm -rf soft*
+rm -r /etc/init.d/vpnserver
+rm -r /usr/local/vpnserver
+rm -r soft*
 rm /etc/resolv.conf && cp /etc/resolv.confx /etc/resolv.conf
 rm /etc/sysctl.conf && cp /etc/sysctl.confx /etc/sysctl.conf
-
-chmod 755 * && ./
