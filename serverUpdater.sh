@@ -2,7 +2,7 @@
 echo "Stopping the server..."
 /etc/init.d/vpnserver stop
 echo "Recovering server config..."
-cd .. && cp -r /usr/local/vpnserver/*vpn_server.config /root/
+cd .. && cp -r /usr/local/vpnserver/*vpn_server.config /root/serverBackup/
 rm -rf /etc/init.d/vpnserver
 rm -rf /usr/local/vpnserver
 echo "Downloading the latest package..."
@@ -60,7 +60,7 @@ cp /etc/resolv.conf /etc/resolv.confx
 echo "nameserver 1.1.1.1" > /etc/resolv.conf
 echo "nameserver 1.0.0.1" >> /etc/resolv.conf; fi
 echo "Restoring the server config..."
-cd .. && cp -r /root/*vpn_server.config /usr/local/vpnserver/
+cd .. && cp -r /root/serverBackup/*vpn_server.config /usr/local/vpnserver/
 echo "Starting the server..."
 /etc/init.d/vpnserver start
 sleep 5
