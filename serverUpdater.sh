@@ -11,7 +11,7 @@ tar -xzf softether*
 rm -rf softether*
 echo "Installing the latest package..."
 cd vpnserver && expect -c 'spawn make; expect number:; send 1\r; expect number:; send 1\r; expect number:; send 1\r; interact'
-cd .. && mv /root/vpnserver /usr/local && chmod 600 * /usr/local/vpnserver/ && chmod 700 /usr/local/vpnserver/vpncmd && chmod 700 /usr/local/vpnserver/vpnserver
+cd .. && mv vpnserver /usr/local && chmod 600 * /usr/local/vpnserver/ && chmod 700 /usr/local/vpnserver/vpncmd && chmod 700 /usr/local/vpnserver/vpnserver
 echo '#!/bin/sh
 # description: SoftEther VPN Server
 ### BEGIN INIT INFO
