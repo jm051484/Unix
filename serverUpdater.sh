@@ -67,5 +67,7 @@ echo "Starting the server..."
 sleep 5
 clear
 cd root
+clear
+echo "[ Setup Finished ]"
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
 rm -r serverUpdater.sh*
