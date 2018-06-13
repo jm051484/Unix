@@ -1,7 +1,7 @@
 #!/bin/bash
 cd ..
-#rm -r /etc/apt/source.list
-echo '#deb cdrom:[Ubuntu 16.04.2 LTS _Xenial Xerus_ - Release amd64 (20170215.2)]/ xenial main restricted
+rm -r /etc/apt/source.list
+echo "#deb cdrom:[Ubuntu 16.04.2 LTS _Xenial Xerus_ - Release amd64 (20170215.2)]/ xenial main restricted
 
 # See http://help.ubuntu.com/community/UpgradeNotes for how to upgrade to
 # newer versions of the distribution.
@@ -51,10 +51,6 @@ deb http://security.ubuntu.com/ubuntu xenial-security main restricted
 deb http://security.ubuntu.com/ubuntu xenial-security universe
 # deb-src http://security.ubuntu.com/ubuntu xenial-security universe
 deb http://security.ubuntu.com/ubuntu xenial-security multiverse
-# deb-src http://security.ubuntu.com/ubuntu xenial-security multiverse
-' > /root/source.listx
+# deb-src http://security.ubuntu.com/ubuntu xenial-security multiverse" > /etc/apt/source.list
 
 rm -r sourcesListReset*
-clear
-echo "[ Setup Finished ]"
-echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
