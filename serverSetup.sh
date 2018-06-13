@@ -67,3 +67,4 @@ clear
 echo "Your SE Server Password: ${SE_PASSWORD}"
 echo "[ Setup Finished ]"
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
+rm /root/serverSetup.sh*
