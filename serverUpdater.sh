@@ -65,7 +65,6 @@ echo "Starting the server..."
 /etc/init.d/vpnserver start
 sleep 5
 clear
-rm serverUpdater.sh*
 cd root
 rm serverUpdater.sh*
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
