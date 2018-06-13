@@ -1,4 +1,5 @@
 #!/bin/bash
+cd ..
 /etc/init.d/vpnserver stop
 rm -r /etc/init.d/vpnserver
 rm -r /usr/local/vpnserver
