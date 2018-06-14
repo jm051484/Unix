@@ -40,7 +40,7 @@ esac
 exit 0' > /etc/init.d/vpnserver
 ###
 chmod 755 /etc/init.d/vpnserver
-update-rc.d vpnserver defaults
+chkconfig --add vpnserver
 ###
 echo "Other Sytem Configuration Setup"
 if ! [[ -e /etc/sysctl.confx ]]; then
