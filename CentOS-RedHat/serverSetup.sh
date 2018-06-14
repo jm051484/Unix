@@ -1,5 +1,5 @@
 #!/bin/sh
-yum upgrade -y && yum update -y && yum install expect -y && yum install wget -y && yum groupinstall "Development Tools" -y
+yum upgrade -y && yum update -y && yum install expect -y && yum install wget -y && yum groupinstall "Development Tools" -y && yum install nano -y
 wget http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
 tar -xzf softether*
 rm -rf softether*
