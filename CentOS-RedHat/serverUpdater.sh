@@ -5,7 +5,7 @@ echo "Recovering server config..."
 mkdir serverBackup
 cd .. && cp -r /usr/local/vpnserver/*vpn_server.config /root/serverBackup/
 chkconfig --del vpnserver
-rm -r /etc/init.d/vpnserver
+rm /etc/init.d/vpnserver
 rm -r /usr/local/vpnserver
 echo "Downloading the latest package..."
 wget http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
