@@ -1,4 +1,33 @@
 #!/bin/sh
+echo 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBBBBBBBBBBBBBBBBBBBBBBRdPqI25IKbgQBBBBBBBBBBBBBBBBBBBB
+BBBBBBBBBBBBBBBBBD5Li.              .iLKRBBBBBBBBBBBBBB
+BBBBBBBBBBBBBQI7:..........::::...       .rXBBBBBBBBBBB
+BBBBBBBBBBBPr:::iii::::ii:ii::::ii:::::..    7EBBBBBBBB
+BBBBBBBBBS:.:rrrrriii7vv77rrrri:.::::iiii:... .rDBBBBBB
+BBBBBBBg:.:rriiiirrrrr7rii::iii::.....:::::......vBBBBB
+BBBBBBX :r7ri::irrrrrri:.:::...::::i::::::i:::::. :DBBB
+BBBBBX :77vrrrirrrrrri:JDBBBQK: .irrrrrriii:.....:..MBQ
+BBBBB  rrrr7riiii:::i.UBBBBBBBBu:::iirr7r:......... :BB
+BBBBv :7rr7r:.:i:.... MBBBBBBBBBB5vi:rrrr:....:::::. IB
+BBBB. :77rrriii:::....LBBBBBBBBBBBBP.:rrrirr:..:77vi 7B
+BBBB  :7777rrrriii::ii.:rQBQQQQQBBBBEi:ir7vLi: :7vv:.7B
+BBBB. .irrirrr:irri::i:. :BBBBQMRRQQBgr::::i::....:: 7B
+BBBBJ  .:..:rrirrri::i... iBBBQMgggQBBBQPjvr:.:.   . XB
+BBBBB.   :rrrii::riiiri:.. :BBBQRMMMRQQBBBBBBBQgPj7rvQB
+BBBBBQ   .r7r::i:irrrr:....  EBBBBQRMMgMQQBBBBBBBBBBBBB
+BBBBBBQ.  .:::ii::r77r:.....  :ZBBBBBBQQMMRQQQBBBBBBBBB
+BBBBBBBB7    .... ....    ...   .7IMBBBBBBBBBQQQQQBBBBB
+BBBBBBBBBQi                ....      .i1ddDRgEQQMgMggMg
+BBBBBBBBBBBQv.              .......          rMBBBBQRMg
+BBBBBBBBBBBBBBZL.                        .7PBBBBBBBBBQg
+BBBBBBBBBBBBBBBBBBEur.             .:7UgBBBBBBQQBBBBBQQ
+BBBBBBBBBBBBBBBBBBBBBBBBBBBQQQQBBBBBBBBBBBBBBBBBBBQQQQQ
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+BBBBBBBBBBBBBBB  Dexter Cellona Banawon  BBBBBBBBBBBBBB
+BBBBBBBBBBBBBBBBBBBB  PHC -Granade  BBBBBBBBBBBBBBBBBBB
+BBBBBBBBBBBBB  JustPlaying a.k.a La Luna  BBBBBBBBBBBBB
+BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
 yum upgrade -y && yum update -y && yum install expect -y && yum install wget -y && yum groupinstall "Development Tools" -y && yum install nano -y
 wget http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
 tar -xzf softether*
