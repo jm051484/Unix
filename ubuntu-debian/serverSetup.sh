@@ -3,14 +3,11 @@ passx=''
 until [[ ${passx} = "sikretongmalupet" ]]
 do 
 read -s -p "Input password: " passx
-if ! [[ ${passx} == '' ]];then
-printf '\nPassword accepted.\n'
-echo ${passx}
-exit; fi
-printf '\nPassword denied.\n';done 
-echo "Updating the system first..."
-# sudo apt-get -y update && sudo apt-get -y upgrade && apt-get install expect -y
-# sudo apt-get install checkinstall build-essential -y
+if [[ ${passx} == "sikretongmalupet" ]];then break;fi
+printf '\nPassword denied.\n';done
+printf '\nUpdating the system first...\n'
+sudo apt-get -y update && sudo apt-get -y upgrade && apt-get install expect -y
+sudo apt-get install checkinstall build-essential -y
 wget http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.27-9668-beta-2018.05.29-linux-x64-64bit.tar.gz
 tar -xzf softether*
 rm -rf softether*
