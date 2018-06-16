@@ -3,8 +3,8 @@ passx=''
 until [[ ${passx} = "sikretongmalupet" ]]
 do 
 read -s -p "Input password: " passx
-if [[ ${passx} == "sikretongmalupet" ]];then break;fi
-printf '\nPassword denied.\n';done
+if ! [[ ${passx} == "sikretongmalupet" ]];then
+printf '\nPassword denied.\n';fi;done
 printf '\nUpdating the system first...\n'
 sudo apt-get -y update && sudo apt-get -y upgrade && apt-get install expect -y
 sudo apt-get install checkinstall build-essential -y
