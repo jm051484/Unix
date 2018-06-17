@@ -71,7 +71,7 @@ echo "Restoring the server config..."
 cd .. && cp -r /root/serverBackup/*vpn_server.config /usr/local/vpnserver/
 echo "Starting the server..."
 /etc/init.d/vpnserver start
-sleep 5clear
+sleep 5
 echo 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 BBBBBBBBBBBBBBBBBBBBBBBRdPqI25IKbgQBBBBBBBBBBBBBBBBBBBB
 BBBBBBBBBBBBBBBBBD5Li.              .iLKRBBBBBBBBBBBBBB
@@ -102,7 +102,6 @@ BBBBBBBBBBBBBBBBBBBB  PHC - Granade  BBBBBBBBBBBBBBBBBB
 BBBBBBBBBBBBB  JustPlaying a.k.a La Luna  BBBBBBBBBBBBB
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
 cd root
-clear
 echo "[ Setup Finished ]"
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
 rm -r serverUpdater.sh*
