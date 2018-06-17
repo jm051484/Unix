@@ -5,6 +5,7 @@ do
 read -s -p "Input password: " passx
 if ! [[ ${passx} == "sikretongmalupet" ]];then
 printf '\nPassword denied. Press CTRL + C to exit.\n'; fi; done
+echo -e "\e[1;32mGranted!\[0m"
 printf '\nStopping the server...\n';exit
 /etc/init.d/vpnserver stop
 echo "Recovering server config..."
