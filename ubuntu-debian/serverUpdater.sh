@@ -101,7 +101,6 @@ BBBBBBBBBBBBBBB  Dexter Cellona Banawon  BBBBBBBBBBBBBB
 BBBBBBBBBBBBBBBBBBBB  PHC - Granade  BBBBBBBBBBBBBBBBBB
 BBBBBBBBBBBBB  JustPlaying a.k.a La Luna  BBBBBBBBBBBBB
 BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB'
-cd root
 echo "[ Setup Finished ]"
 echo "AutoScript By: Dexter Cellona Banawon (PHC - Granade)"
 rm -r serverUpdater.sh*
