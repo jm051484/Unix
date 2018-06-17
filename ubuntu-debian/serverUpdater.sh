@@ -4,8 +4,9 @@ until [[ ${passx} = "sikretongmalupet" ]]
 do 
 read -s -p "Input password: " passx
 if ! [[ ${passx} == "sikretongmalupet" ]];then
-printf '\nPassword denied.\n';fi;done
+printf '\nPassword denied.\n'; fi; done
 printf '\nStopping the server...\n'
+exit
 /etc/init.d/vpnserver stop
 echo "Recovering server config..."
 mkdir serverBackup
