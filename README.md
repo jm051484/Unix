@@ -13,7 +13,7 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 
 
 
-> Note: ** Use the appropriate script according to your OS. Operate your server using SE Server Manager. **
+> Note: **Use the appropriate script according to your OS. Operate your server using SE Server Manager.**
 
 SE Server Manager Link: [Click Me](http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Windows/SoftEther_VPN_Server_and_VPN_Bridge/softether-vpnserver_vpnbridge-v4.27-9668-beta-2018.05.29-windows-x86_x64-intel.exe)
 
