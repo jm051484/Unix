@@ -1,15 +1,8 @@
-## Debian
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDeb && chmod +x serverSetupDeb && ./serverSetupDeb
-> Debian 8
+## For Debian and Ubuntu
+wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupAll && chmod +x serverSetupAll && ./serverSetupAll
 
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDeb8 && chmod +x serverSetupDeb8 && ./serverSetupDeb8
-## Ubuntu
-### Server:
-### LTS
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupUbu && chmod +x serverSetupUbu && ./serverSetupUbu
-### SMP
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDebSMP && chmod +x serverSetupDebSMP && ./serverSetupDebSMP
-### LBC Install (No SE Server Setup):
+
+### LBC Install (No SE Server Setup; Ubuntu Only):
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_install_ubu && chmod +x lbc_install_ubu && ./lbc_install_ubu
 
 ## CentOS
