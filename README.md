@@ -6,7 +6,7 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/ser
 ### LTS
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupUbu && chmod +x serverSetupUbu && ./serverSetupUbu
 ### SMP
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupUbuSMP && chmod +x serverSetupUbuSMP && ./serverSetupUbuSMP
+wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDebSMP && chmod +x serverSetupDebSMP && ./serverSetupDebSMP
 ### LBC Install (No SE Server Setup):
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_install_ubu && chmod +x lbc_install_ubu && ./lbc_install_ubu
 
