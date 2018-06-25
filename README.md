@@ -3,7 +3,10 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/ser
 
 ## Ubuntu
 ### Server:
+### LTS
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupUbu && chmod +x serverSetupUbu && ./serverSetupUbu
+### SMP
+wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupUbuSMP && chmod +x serverSetupUbuSMP && ./serverSetupUbuSMP
 ### LBC Install (No SE Server Setup):
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_install_ubu && chmod +x lbc_install_ubu && ./lbc_install_ubu
 
