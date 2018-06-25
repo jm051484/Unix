@@ -21,6 +21,9 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 
 
 :heavy_check_mark: SE Server Setup
+
 :heavy_check_mark: Ubuntu/Debian LBC and SNat Setup
-:x: Pre-made hub\lf
+
+:x: Pre-made hub
+
 :x: CentOS LBC
