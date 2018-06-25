@@ -1,6 +1,7 @@
 ## Debian
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDeb && chmod +x serverSetupDeb && ./serverSetupDeb
-
+> Debian 8
+wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupDeb8 && chmod +x serverSetupDeb8 && ./serverSetupDeb8
 ## Ubuntu
 ### Server:
 ### LTS
