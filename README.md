@@ -8,7 +8,7 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 ## CentOS
 1. yum install wget -y
 
-### SNAT
+### SNAT (Not yet fixed)
 2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupCent && chmod +x serverSetupCent && ./serverSetupCent
 
 ### LBC
@@ -30,3 +30,5 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 :x: Pre-made hub
 
 :heavy_check_mark: CentOS LBC
+
+:x: CentOS SNAT (Not yet fixed)
