@@ -7,7 +7,12 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 
 ## CentOS
 1. yum install wget -y
-2. wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupCent && chmod +x serverSetupCent && ./serverSetupCent
+
+### SNAT
+2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupCent && chmod +x serverSetupCent && ./serverSetupCent
+
+### LBC
+2.b) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupLBC && chmod +x serverSetupLBC && ./serverSetupLBC
 
 
 
@@ -24,4 +29,4 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 
 :x: Pre-made hub
 
-:x: CentOS LBC
+:heavy_check_mark: CentOS LBC
