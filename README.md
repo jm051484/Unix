@@ -31,6 +31,4 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 
 :x: Pre-made hub
 
-:heavy_check_mark: CentOS LBC and DNSMASQ IP Fixer
-
-:x: CentOS SNAT (Not yet fixed)
+:heavy_check_mark: CentOS LBC, SNAT, and DNSMASQ IP Fixer
