@@ -12,7 +12,7 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupCent && chmod +x serverSetupCent && ./serverSetupCent
 
 ### LBC
-2.b) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupLBC && chmod +x serverSetupLBC && ./serverSetupLBC
+2.b) wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetup+LBC" && chmod +x "serverSetup+LBC" && ./serverSetup+LBC
 
 
 
