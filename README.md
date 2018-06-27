@@ -14,7 +14,7 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 ### LBC
 2.b) wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetup+LBC" && chmod +x "serverSetup+LBC" && ./serverSetup+LBC
 
-dnsmasq IP Fixer
+**dnsmasq IP Fixer**
 
 wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/dnsmasqIP-fix" && chmod +x "dnsmasqIP-fix" && ./dnsmasqIP-fix
 
