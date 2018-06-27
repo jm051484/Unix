@@ -8,8 +8,8 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc
 ## CentOS
 1. yum install wget -y
 
-### SNAT (Not yet fixed)
-2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupCent && chmod +x serverSetupCent && ./serverSetupCent
+### SNAT
+2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
 
 ### LBC
 2.b) wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetup+LBC" && chmod +x "serverSetup+LBC" && ./serverSetup+LBC
