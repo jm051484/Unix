@@ -5,6 +5,8 @@ wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/ser
 ### LBC Install (No SE Server Setup):
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_installAll && chmod +x lbc_installAll && ./lbc_installAll
 
+wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_install && chmod +x lbc_install && ./lbc_install
+
 ## CentOS
 1. yum install wget -y
 
