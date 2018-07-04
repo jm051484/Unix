@@ -1,23 +1,23 @@
 ## For Debian and Ubuntu
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/serverSetupAll && chmod +x serverSetupAll && ./serverSetupAll
+wget https://git.io/fF9lI -O serverSetupAll && chmod +x serverSetupAll && ./serverSetupAll
 
 
 ### LBC Install (No SE Server Setup):
 
-wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/ubuntu-debian/lbc_install && chmod +x lbc_install && ./lbc_install
+wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install
 
 ## CentOS
 1. yum install wget -y
 
 ### SNAT
-2.a) wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
+2.a) wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
 
 ### LBC
-2.b) wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/serverSetup+LBC" && chmod +x "serverSetup+LBC" && ./serverSetup+LBC
+2.b) wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC
 
 **dnsmasq IP Fixer**
 
-wget "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/CentOS-Fedora/dnsmasqIP-fix" && chmod +x "dnsmasqIP-fix" && ./dnsmasqIP-fix
+wget https://git.io/fFHIB -O dnsmasqIP-fix && chmod +x dnsmasqIP-fix && ./dnsmasqIP-fix
 
 > Note: **Use the appropriate script according to your OS. Operate your server using SE Server Manager.**
 
