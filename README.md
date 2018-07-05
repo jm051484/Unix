@@ -1,5 +1,5 @@
 ## For Debian and Ubuntu
-wget https://git.io/fF9lI -O serverSetupAll && chmod +x serverSetupAll && ./serverSetupAll
+wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
 
 
 ### LBC Install (No SE Server Setup):
