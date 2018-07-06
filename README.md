@@ -1,4 +1,4 @@
-<button onclick="alert('asddasd')">asdsds</button>
+<button onclick="alert('asddasd')">asdsdsxxxxx</button>
 ## For Debian and Ubuntu
 wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
 
