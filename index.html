@@ -40,8 +40,10 @@ h1 {
   function copyx(bttn,txtbox) {
   var btnItems = document.getElementsByTagName("button");
   for(var i = 0;i < btnItems.length; i++) {
-  btnItems[i].innerHTML="Copy";}
+  btnItems[i].innerHTML="Copy";
+  btnItems[i].disabled=false;}
   bttn.innerHTML="Copied";
+  bttn.disabled=true;
   var copyText = document.getElementById(txtbox);
   copyText.select();
   document.execCommand("copy");}
