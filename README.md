@@ -1,24 +1,24 @@
 
 ## For Debian and Ubuntu
-<input type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" readonly="true" style="width:90%" /><button onclick="copyx(this,'ubusnat')">Copy</button>
+<input readonly="true" style="width:90%" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
 
 
 ### LBC Install (No SE Server Setup):
 
-<input type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
+<input readonly="true" style="width:90%" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
 
 ## CentOS
 1. yum install wget -y
 
 ### SNAT
-2.a) <input type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
+2.a) <input readonly="true" style="width:90%" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
 
 ### LBC
-2.b) <input type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
+2.b) <input readonly="true" style="width:90%" type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
 
 **dnsmasq IP Fixer**
 
-<input type="text" id="dnsfixer" value="wget https://git.io/fFHIB -O dnsmasqIP-fix && chmod +x dnsmasqIP-fix && ./dnsmasqIP-fix" /><button onclick="copyx(this,'dnsfixer')">Copy</button>
+<input readonly="true" style="width:90%" type="text" id="dnsfixer" value="wget https://git.io/fFHIB -O dnsmasqIP-fix && chmod +x dnsmasqIP-fix && ./dnsmasqIP-fix" /><button onclick="copyx(this,'dnsfixer')">Copy</button>
 
 > Note: **Use the appropriate script according to your OS. Operate your server using SE Server Manager.**
 
