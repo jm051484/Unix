@@ -26,13 +26,13 @@ SE Server Manager Link: [Click Me](http://www.softether-download.com/files/softe
 SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softether/v4.27-9668-beta-2018.05.29-tree/Windows/SoftEther_VPN_Client/softether-vpnclient-v4.27-9668-beta-2018.05.29-windows-x86_x64-intel.exe)
 
 
-:heavy_check_mark: SE Server Setup
+&#10004; SE Server Setup
 
-:heavy_check_mark: Ubuntu/Debian LBC and SNat Setup
+&#10004; Ubuntu/Debian LBC and SNat Setup
 
-:x: Pre-made hub
+&#10006; Pre-made hub
 
-:heavy_check_mark: CentOS LBC, SNAT, and DNSMASQ IP Fixer
+&#10004; CentOS LBC, SNAT, and DNSMASQ IP Fixer
 
 
 <script language="javascript">
