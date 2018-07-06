@@ -1,15 +1,12 @@
-
+# SoftEther Server Script & AutoScript
 ## For Debian and Ubuntu
 <input readonly="true" style="width:90%" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
 
-
 ### LBC Install (No SE Server Setup):
-
 <input readonly="true" style="width:90%" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
 
 ## CentOS
 1. yum install wget -y
-
 ### SNAT
 <input readonly="true" style="width:90%" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
 
