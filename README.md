@@ -27,7 +27,7 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 
 &#10004; Ubuntu/Debian LBC and SNat Setup
 
-&#10006; Pre-made hub
+&#10060; Pre-made hub
 
 &#10004; CentOS LBC, SNAT, and DNSMASQ IP Fixer
 
