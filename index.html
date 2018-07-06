@@ -38,6 +38,7 @@ h1 {
 </body>
 <script language="javascript">
   function copyx(bttn,txtbox) {
+  var btnItems = document.getElementsByTagName("button");
   for(var i = 0;i < btnItems.length; i++) {
   btnItems[i].innerHTML="Copy";}
   bttn.innerHTML="Copied";
