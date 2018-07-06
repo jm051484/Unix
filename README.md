@@ -5,9 +5,9 @@
   function copyx() {
   var copyText = document.getElementById("ubusnat");
   copyText.select();
-  document.execCommand("copy");}
-  copyText.Value="Copied"
-  copyText.Enabled="false"
+  document.execCommand("copy");
+  copyText.value="Copied";
+  copyText.disabled=true;}
 </script>
 
 
