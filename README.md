@@ -1,6 +1,6 @@
 
 ## For Debian and Ubuntu
-<input type="text" id="ubusnat">wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT</input><button onclick="copyx()">CopyX</button>
+<input type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx()">CopyX</button>
 <script language="javascript">
   function copyx() {
   var copyText = document.getElementById("ubusnat");
