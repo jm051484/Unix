@@ -7,6 +7,7 @@
 
 ## CentOS
 1. yum install wget -y
+
 ### SNAT
 <input readonly="true" style="width:90%" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
 
