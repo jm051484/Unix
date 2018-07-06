@@ -1,18 +1,18 @@
 # SoftEther Server Script & AutoScript
 ## For Debian and Ubuntu
-<input readonly="true" style="width:90%" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
+
 
 ### LBC Install (No SE Server Setup):
-<input readonly="true" style="width:90%" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
+
 
 ## CentOS
 1. yum install wget -y
 
 ### SNAT
-<input readonly="true" style="width:90%" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
+
 
 ### LBC
-<input readonly="true" style="width:90%" type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
+
 
 **dnsmasq IP Fixer**
 <input readonly="true" style="width:90%" type="text" id="dnsfixer" value="wget https://git.io/fFHIB -O dnsmasqIP-fix && chmod +x dnsmasqIP-fix && ./dnsmasqIP-fix" /><button onclick="copyx(this,'dnsfixer')">Copy</button>
@@ -33,10 +33,4 @@ SE Client Manager Link: [Click Me](http://www.softether-download.com/files/softe
 &#10004; CentOS LBC, SNAT, and DNSMASQ IP Fixer
 
 
-<script language="javascript">
-  function copyx(bttn,txtbox) {
-  bttn.innerHTML="Copied";
-  var copyText = document.getElementById(txtbox);
-  copyText.select();
-  document.execCommand("copy");}
-</script>
+
