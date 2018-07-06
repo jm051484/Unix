@@ -1,6 +1,12 @@
-<button onclick="alert('asddasd')">asdsdsxxxxx</button>
+
 ## For Debian and Ubuntu
-wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT
+<p id="ubusnat">wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT</p><button onclick="copyx()">Copy</button>
+<script language="javascript">
+  function copyx() {
+  var copyText = document.getElementById("ubusnat");
+  copyText.select();
+  document.execCommand("copy");}
+</script>
 
 
 ### LBC Install (No SE Server Setup):
