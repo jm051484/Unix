@@ -1,16 +1,40 @@
 <!DOCTYPE html>
 <title>SE Server Scripts</title>
 <html>
+<style>
+* {
+	text-align: center;
+	position: relative;
+	}
+input[type=text] {
+	width:50%;
+	height:30px;
+	}
+button {
+	height:40px;
+	width:100px;
+	margin-left: 10px;
+	}
+input[type=text],button{
+	margin:-10px 10px -10px 10px;
+	border-radius: 25px;
+	box-shadow: 0 0 25px blue;
+	}
+h1 {
+	top: 25px;
+	}
+</style>
 <body>
-<h1>SE Server Scripts</h1>
+<h1 class="tt">SE Server Scripts</h1>
+<div>By: Dexter Cellona Banawon</div>
   <h3>Ubuntu SNAT</h3>
-<input readonly="true" style="width:90%" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
-<h3>Ubuntu LBC</h3>
-<input readonly="true" style="width:90%" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
-<h3>CentOS SNAT</h3>
-<input readonly="true" style="width:90%" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
-<h3>CentOS LBC</h3>
-<input readonly="true" style="width:90%" type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
+<input readonly="true" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
+  <h3>Ubuntu LBC</h3>
+<input readonly="true" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
+  <h3>CentOS SNAT</h3>
+<input readonly="true" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
+  <h3>CentOS LBC</h3>
+<input readonly="true" type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
 </body>
 <script language="javascript">
   function copyx(bttn,txtbox) {
