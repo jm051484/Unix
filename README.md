@@ -6,7 +6,7 @@
   var copyText = document.getElementById("ubusnat");
   copyText.select();
   document.execCommand("copy");
-  document.getElementById("ububtn").InnerHTML="Copied";}
+  document.getElementById("ububtn").innerHTML="Copied";}
 </script>
 
 
