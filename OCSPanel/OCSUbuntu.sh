@@ -1,5 +1,5 @@
 #!/bin/bash
-
+rm $0
 #Initializing var
 if [[ "$USER" != 'root' ]]; then
 	echo "Run this script with root privileges."
