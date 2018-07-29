@@ -7,7 +7,7 @@ if [[ "$USER" != 'root' ]]; then
 fi
 
 #Requirement
-wget -y update && wget -y install curl
+apt-get -y update && apt-get -y install curl
 
 # Checking Status
 MYIP=$(curl -4 icanhazip.com)
@@ -31,11 +31,11 @@ echo "All questions have been answered."
 read -n1 -r -p "Press any key to continue ..."
 
 # update
-wget -y update
-wget -y groupinstall 'Development Tools' && wget -y install cmake && wget -y install expect-devel
+apt-get -y update
+apt-get -y groupinstall 'Development Tools' && apt-get -y install cmake && apt-get -y install expect-devel
 	
 #Install MySQL & Create Database
-wget -y install mysql-server
+apt-get -y install mysql-server
 chown -R mysql:mysql /var/lib/mysql/
 chmod -R 755 /var/lib/mysql/
 chkconfig mysqld on
@@ -71,7 +71,7 @@ echo "$so2"
 #CREATE DATABASE IF NOT EXISTS OCS_PANEL;EXIT;
 
 #Install Webserver
-wget -y install nginx php php-fpm php-cli php-mysql php-mcrypt
+apt-get -y install nginx php php-fpm php-cli php-mysql php-mcrypt
 rm -f /usr/share/nginx/html/index.html
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
 mv /etc/nginx/conf.d/vps.conf /etc/nginx/conf.d/vps.conf.backup
@@ -96,7 +96,7 @@ service php-fpm restart
 service nginx restart
 
 #Install zip La Luna Script
-wget -y install zip unzip
+apt-get -y install zip unzip
 cd /home/vps/public_html
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/OCSPanel/OCSPanelUbuntu.zip
 unzip OCSPanelUbuntu.zip
