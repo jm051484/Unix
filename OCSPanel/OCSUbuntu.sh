@@ -7,7 +7,7 @@ if [[ "$USER" != 'root' ]]; then
 fi
 
 #Requirement
-apt-get -y update && apt-get -y install curl
+apt-get update -y && apt-get install curl -y
 
 # Checking Status
 MYIP=$(curl -4 icanhazip.com)
@@ -31,14 +31,14 @@ echo "All questions have been answered."
 read -n1 -r -p "Press any key to continue ..."
 
 # update
-apt-get -y update
-apt-get install checkinstall build-essential -y && apt-get -y install cmake && apt-get -y install expect-devel
+apt-get update -y
+apt-get install checkinstall build-essential -y && apt-get install cmake -y && apt-get -y install expect-devel -y
 	
 #Install MySQL & Create Database
-apt-get -y install mysql-server
+apt-get install mysql-server -y
 chown -R mysql:mysql /var/lib/mysql/
 chmod -R 755 /var/lib/mysql/
-chkconfig mysqld on
+update-rc.d mysqld defaults
 service mysqld start
 #mysql_secure_installation
 so1=$(expect -c "
@@ -71,7 +71,7 @@ echo "$so2"
 #CREATE DATABASE IF NOT EXISTS OCS_PANEL;EXIT;
 
 #Install Webserver
-apt-get -y install nginx php php-fpm php-cli php-mysql php-mcrypt
+apt-get install nginx php php-fpm php-cli php-mysql php-mcrypt -y
 rm -f /usr/share/nginx/html/index.html
 mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.backup
 mv /etc/nginx/conf.d/vps.conf /etc/nginx/conf.d/vps.conf.backup
@@ -96,7 +96,7 @@ service php-fpm restart
 service nginx restart
 
 #Install zip La Luna Script
-apt-get -y install zip unzip
+apt-get install zip unzip -y
 cd /home/vps/public_html
 wget https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/OCSPanel/OCSPanelUbuntu.zip
 unzip OCSPanelUbuntu.zip
