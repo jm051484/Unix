@@ -32,7 +32,7 @@ read -n1 -r -p "Press any key to continue ..."
 
 # update
 apt-get -y update
-apt-get -y groupinstall 'Development Tools' && apt-get -y install cmake && apt-get -y install expect-devel
+apt-get install checkinstall build-essential -y && apt-get -y install cmake && apt-get -y install expect-devel
 	
 #Install MySQL & Create Database
 apt-get -y install mysql-server
