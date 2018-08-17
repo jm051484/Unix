@@ -1,0 +1,161 @@
+index.php0100777000000000000000000000073313335506064007644 0ustar00<?php  require "stats.php";?>
+<!DOCTYPE html>
+<html>
+<head>
+<title>X-DCB (Monitoring)</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <meta name="viewport" content="width=device-width">
+</head>
+<body>
+  <h2>OPENVPN SERVER STATISTICS</h2>
+  <table>
+    <tr>
+      <th>User ID</th>
+      <th>Sent</th>
+      <th>Received</th>
+    </tr>
+    <tr>
+    </tr>
+      <?php load_table_stats(); ?>
+  </table><br>
+  <div><?php show_stats();?></div>
+</body>
+</html>stats-.php0100777000000000000000000000335313335507422007750 0ustar00<?php
+  mysql_connect("localhost","root","onethree") or die(mysql_error());
+	mysql_select_db("openvpn") or die("Cannot connect to the database.");
+  function show_records(){
+      $query = mysql_fetch_array(mysql_query(
+        "
+          select 
+            sum(log_send <> 0) as conns,
+            sum(log_send) as received
+            from log"));
+      return $query;
+  }
+  function show_stats(){
+      // BTYES RECEIVED
+      Print get_byte_text("Usage/Connections : ", show_records()['received']).
+      // CONNECTIONS
+      "/" . show_records()['conns'];
+  }
+  function load_table_stats(){
+      $queryx = mysql_query(
+        "
+          select distinct
+            user_id as id
+            from log");
+      while ($hh = mysql_fetch_array($queryx)) {
+            $stat = get_user_stats($hh['id']);
+            Print 
+            '<tr><td id="left">' . $hh['id'] . 
+            '</td><td>' . get_byte_text('',$stat['s']) . 
+            '</td><td>' . get_byte_text('', $stat['r'])
+              . '</td></tr>';
+      }
+  }
+  function get_user_stats($id){
+    $bytes_r = mysql_fetch_array(mysql_query(
+              "select
+              sum(log_received) as received,
+              sum(log_send) as sent
+              from log where user_id='". $id . "'"));
+    return array('s' => $bytes_r['received'], 'r' => $bytes_r['sent']);
+  }
+  // FUNCTIONS
+  function write($txt){
+    print($txt . "<br>");
+  }
+  function get_byte_text($txt='',$bytes){
+    $arrt = array(0,1,2,3,4);
+    $arrg = array("B","KB","MB","GB","TB");
+    foreach ($arrt as $gg) {
+      if(round($bytes/pow(1024, $gg),2) < 1024)
+        {
+          return $txt . round($bytes/pow(1024, $gg),2) . " " . $arrg[$gg];
+        }
+      }
+    }
+?>stats.php0100777000000000000000000000334013335557071007674 0ustar00<?php
+  mysql_connect("localhost","root") or die(mysql_error());
+	mysql_select_db("openvpn") or die("Cannot connect to the database.");
+  function show_records(){
+      $query = mysql_fetch_array(mysql_query(
+        "
+          select 
+            sum(log_send <> 0) as conns,
+            sum(log_send) as received
+            from log"));
+      return $query;
+  }
+  function show_stats(){
+      // BTYES RECEIVED
+      Print get_byte_text("Usage/Connections : ", show_records()['received']).
+      // CONNECTIONS
+      "/" . show_records()['conns'];
+  }
+  function load_table_stats(){
+      $queryx = mysql_query(
+        "
+          select distinct
+            user_id as id
+            from log");
+      while ($hh = mysql_fetch_array($queryx)) {
+            $stat = get_user_stats($hh['id']);
+            Print 
+            '<tr><td id="left">' . $hh['id'] . 
+            '</td><td>' . get_byte_text('',$stat['s']) . 
+            '</td><td>' . get_byte_text('', $stat['r'])
+              . '</td></tr>';
+      }
+  }
+  function get_user_stats($id){
+    $bytes_r = mysql_fetch_array(mysql_query(
+              "select
+              sum(log_received) as received,
+              sum(log_send) as sent
+              from log where user_id='". $id . "'"));
+    return array('s' => $bytes_r['received'], 'r' => $bytes_r['sent']);
+  }
+  // FUNCTIONS
+  function write($txt){
+    print($txt . "<br>");
+  }
+  function get_byte_text($txt='',$bytes){
+    $arrt = array(0,1,2,3,4);
+    $arrg = array("B","KB","MB","GB","TB");
+    foreach ($arrt as $gg) {
+      if(round($bytes/pow(1024, $gg),2) < 1024)
+        {
+          return $txt . round($bytes/pow(1024, $gg),2) . " " . $arrg[$gg];
+        }
+      }
+    }
+?>styles.css0100777000000000000000000000062513335507371010063 0ustar00body {
+	/*
+   max-width: 90%;
+   */
+   margin: auto;
+   width: 30em;
+   font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+h2 {
+   text-align: center;
+}
+div {
+	width: 100%;
+	text-align: center;
+}
+table, th, td {
+   margin: auto;
+	border-collapse: collapse;
+	border: 1px solid black;
+	width: 450px;
+	text-align: center;
+}
+#left {
+	text-align: left;
+}
+table {
+
+	max-width: 90%;
+}
