@@ -1,3 +1,4 @@
+UPDATE mysql.user SET plugin='' where User='root';
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
