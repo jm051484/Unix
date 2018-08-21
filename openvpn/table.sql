@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS openvpn;
+USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
     `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
     `user_pass` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1234',
