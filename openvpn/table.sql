@@ -1,3 +1,4 @@
+SET GLOBAL sql_mode = '';
 UPDATE mysql.user SET plugin='' where User='root';
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
