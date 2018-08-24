@@ -1,6 +1,6 @@
 SET sql_mode = '';
 SET GLOBAL sql_mode = '';
-UPDATE mysql.user SET plugin='' where User='root'; // credentials error in ubuntu
+UPDATE mysql.user SET plugin='' where User='root'; -- credentials error in ubuntu
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
