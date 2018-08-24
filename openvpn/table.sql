@@ -1,7 +1,6 @@
 SET sql_mode = '';
 SET GLOBAL sql_mode = '';
-UPDATE mysql.user SET plugin='' where User='root'; -- credentials error in ubuntu
-UPDATE mysql.user SET plugin="mysql_native_password" WHERE User='root'; -- credentials fix in ubuntu
+UPDATE mysql.user SET plugin="mysql_native_password" WHERE User='root'; -- credentials fix in ubuntu but error in debian
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
