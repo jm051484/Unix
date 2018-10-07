@@ -61,6 +61,6 @@ sed -i "s/yourip/$MYIP/g" /etc/squid/squid.conf
 # reload daemon
 systemctl daemon-reload
 # restart services
-systemctl restart {squid,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
-systemctl enable {squid,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
