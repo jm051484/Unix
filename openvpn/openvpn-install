@@ -11,7 +11,7 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sou
 # INSTALL REQUIREMENTS
 apt update $SI
 apt-get $SI install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mariadb-server openvpn squid3
-if [[ `uname -r` =~ "3.16" ]]; then
+if [[ `uname -r` =~ "4.9" ]]; then
 apt remove --purge apache* $SI
 apt remove --purge php7* $SI
 apt autoremove $SI
