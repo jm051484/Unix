@@ -9,7 +9,7 @@ wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php5.list
 # INSTALL REQUIREMENTS
 apt update $SI
-apt-get $SI install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mysql-server openvpn squid
+apt-get $SI install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mysql-server openvpn squid3
 apt remove --purge apache* $SI
 apt remove --purge php7* $SI
 apt autoremove $SI
