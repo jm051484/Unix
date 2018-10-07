@@ -56,7 +56,7 @@ iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE' > /sbin/ipt
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd;MYIP=$(wget -qO- ipv4.icanhazip.com)
-wget -qO /etc/squid/squid.conf "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/openvpn/squid.conf"
+wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/SE_Scripts/master/openvpn/squid.conf"
 sed -i "s/yourip/$MYIP/g" /etc/squid/squid.conf
 # reload daemon
 systemctl daemon-reload
