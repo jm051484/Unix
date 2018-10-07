@@ -1,4 +1,5 @@
 #!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
 # UPDATE SOURCE LIST
 SI="-o Acquire::Check-Valid-Until=false -y"
 apt-get $SI update
