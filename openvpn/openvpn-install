@@ -54,7 +54,9 @@ StandardOutput=null
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/iptab.service
 echo '#!/bin/bash
-iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE' > /sbin/iptab
+iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -A INPUT -i tun+ -j ACCEPT
+iptables -A FORWARD -i tun+ -j ACCEPT' > /sbin/iptab
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
