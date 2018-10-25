@@ -1,7 +1,11 @@
 #!/bin/bash
 # install squid
+apt-get remove --purge squid3 -y
+apt-get autoremove -y
+apt-get install squid3 -y
 cd;MYIP=$(wget -qO- ipv4.icanhazip.com)
 wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf"
 sed -i "s/yourip/$MYIP/g" /etc/squid3/squid.conf
-echo Script by Dexter Cellona Banawon
-echo "PHC - Granade :)"
+echo "Installation finished.
+Script by Dexter Cellona Banawon
+PHC - Granade | :)"
