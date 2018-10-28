@@ -64,7 +64,6 @@ chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd
 wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf"
-sed -i "s/yourip/$MYIP/g" /etc/squid3/squid.conf
 # reload daemon
 systemctl daemon-reload
 # restart services
