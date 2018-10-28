@@ -42,7 +42,9 @@ sed -i 's/85\;/80\;/g' /etc/nginx/conf.d/vps.conf
 sed -i 's/\/home\/vps\/public_html/\/var\/www\/html/g' /etc/nginx/conf.d/vps.conf
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn;mkdir log
+MYIP=$(wget -qO- ipv4.icanhazip.com)
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar" -qO- | tar x
+sed -i "s/x.x.x.x/$MYIP/g" 1194.conf
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 # create IP Table Service
@@ -60,7 +62,7 @@ iptables -A FORWARD -i tun+ -j ACCEPT' > /sbin/iptab
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
-cd;MYIP=$(wget -qO- ipv4.icanhazip.com)
+cd
 wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf"
 sed -i "s/yourip/$MYIP/g" /etc/squid3/squid.conf
 # reload daemon
