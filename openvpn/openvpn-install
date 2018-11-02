@@ -61,12 +61,14 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to '$MYIP'
 iptables -A INPUT -i tun+ -j ACCEPT
 iptables -A FORWARD -i tun+ -j ACCEPT
 iptables -A INPUT -i tap+ -j ACCEPT
-iptables -A FORWARD -i tap+ -j ACCEPT' > /sbin/iptab
+iptables -A FORWARD -i tap+ -j ACCEPT
+iptables -A INPUT -p udp --dport 1194 -j ACCEPT
+iptables -A INPUT -p tcp --dport 1194 -j ACCEPT' > /sbin/iptab
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd
-wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
+wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf"
 # reload daemon
 systemctl daemon-reload
 # restart services
