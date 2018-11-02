@@ -1,0 +1,5 @@
+#!/bin/bash
+read -p "Shareable RP [Y]es [N]o : " shr
+MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow
+[[ $shr =~ N|n ]] && shre=deny
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3
