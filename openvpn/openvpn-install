@@ -3,8 +3,12 @@ export DEBIAN_FRONTEND=noninteractive
 if ! [[ -e /etc/debian_version ]]; then
 echo For DEBIAN only.
 exit;fi
+function squi {
 read -p "Shareable RP [Y]es [N]o : " shr
-MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow
+[[ ! $shr =~ Y|y|N|n ]] && squi
+}; squi
+MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow;rpstat=''
+[[ $shr =~ N|n ]] && shre=deny && rpstat=' not'
 # UPDATE SOURCE LIST
 SI="-o Acquire::Check-Valid-Until=false -y"
 apt-get $SI update
@@ -67,7 +71,6 @@ iptables -A FORWARD -i tap+ -j ACCEPT' > /sbin/iptab
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd
-[[ $shr =~ N|n ]] && shre=deny
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
 # reload daemon
 systemctl daemon-reload
@@ -77,4 +80,5 @@ systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
+echo 'Your Squid Proxy is'$rpstat' shareable.'
 echo "Installation finished."

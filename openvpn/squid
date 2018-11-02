@@ -1,5 +1,10 @@
 #!/bin/bash
+MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow;rpstat=''
+function squi {
 read -p "Shareable RP [Y]es [N]o : " shr
-MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow
-[[ $shr =~ N|n ]] && shre=deny
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3
+[[ ! $shr =~ Y|y|N|n ]] && squi
+}; squi
+[[ $shr =~ N|n ]] && shre=deny && rpstat=' not'
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
+# reload daemon
+echo 'Your Squid is'$rpstat' shareable.'
