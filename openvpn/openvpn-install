@@ -61,9 +61,7 @@ iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to '$MYIP'
 iptables -A INPUT -i tun+ -j ACCEPT
 iptables -A FORWARD -i tun+ -j ACCEPT
 iptables -A INPUT -i tap+ -j ACCEPT
-iptables -A FORWARD -i tap+ -j ACCEPT
-iptables -A INPUT -p udp --dport 1194 -j ACCEPT
-iptables -A INPUT -p tcp --dport 1194 -j ACCEPT' > /sbin/iptab
+iptables -A FORWARD -i tap+ -j ACCEPT' > /sbin/iptab
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
@@ -75,3 +73,6 @@ systemctl daemon-reload
 systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
 systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
+clear
+wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner"
+echo "Installation finished."

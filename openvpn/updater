@@ -24,6 +24,7 @@ chmod +x /sbin/iptab
 # SQUID SETTINGS
 wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf"
 # FINISHING STATEMENT
+systemctl restart {squid3,openvpn}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner"
 echo "Installation finished."
