@@ -74,5 +74,5 @@ systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
 systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 clear
-wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner"
+wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo "Installation finished."

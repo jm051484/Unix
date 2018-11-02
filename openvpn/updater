@@ -26,5 +26,5 @@ wget -qO /etc/squid3/squid.conf "https://raw.githubusercontent.com/X-DCB/Unix/ma
 # FINISHING STATEMENT
 systemctl restart {squid3,openvpn}
 clear
-wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner"
+wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo "Installation finished."
