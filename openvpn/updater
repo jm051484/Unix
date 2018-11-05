@@ -12,7 +12,7 @@ wget -qO 1194.conf https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1
 # ROUTING TABLE
 MYIP=$(wget -qO- ipv4.icanhazip.com)
 echo 1 > /proc/sys/net/ipv4/ip_forward
-wget -qO- https://github.com/X-DCB/Unix/blob/master/openvpn/rem.rules | bash
+wget -qO- https://github.com/X-DCB/Unix/blob/master/openvpn/rem.rules | sed -e "s/x.x.x.x/$MYIP/g" | bash
 echo '#!/bin/bash
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -j SNAT --to '$MYIP'
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
