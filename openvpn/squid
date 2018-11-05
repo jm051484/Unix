@@ -6,8 +6,10 @@ read -p "Shareable RP [Y]es [N]o : " shr
 }; squi
 [[ $shr =~ N|n ]] && shre=deny && rpstat=' not'
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
-# reload daemon
-systemctl restart squid3
+# reload
+systemctl restart {openvpn,squid3}
 clear
-echo 'Squid Proxy already restarted.'
+wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
+echo 'Openvpn Server has been restarted.'
+echo 'Squid Proxy has been restarted.'
 echo 'Your Squid is'$rpstat' shareable.'
