@@ -1,9 +1,0 @@
-#!/bin/bash
-iptables -A INPUT -i tun+ -j ACCEPT
-iptables -A FORWARD -i tun+ -j ACCEPT
-iptables -A INPUT -i tap+ -j ACCEPT
-iptables -A FORWARD -i tap+ -j ACCEPT
-iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
-iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -t nat -I POSTROUTING 2 -s 10.8.0.0/24 -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
-iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
