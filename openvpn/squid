@@ -1,10 +1,10 @@
 #!/bin/bash
-MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow;rpstat=''
+MYIP=$(wget -qO- ipv4.icanhazip.com);shre=#http_access;rpstat=''
 until [[ $shr =~ Y|y|N|n ]]; do
 	read -p "Shareable RP [Y]es [N]o : " shr
 done
-[[ $shr =~ N|n ]] && shre=deny && rpstat=' not'
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
+[[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
 # reload
 systemctl restart {openvpn,squid3}
 clear
