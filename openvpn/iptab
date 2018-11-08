@@ -1,0 +1,10 @@
+#!/bin/bash
+iptables -t filter -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+iptables -I INPUT -i tun+ -j ACCEPT
+iptables -I FORWARD -i tun+ -j ACCEPT
+iptables -I INPUT -i tap+ -j ACCEPT
+iptables -I FORWARD -i tap+ -j ACCEPT
+iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -I POSTROUTING 2 -s 10.8.0.0/24 -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
