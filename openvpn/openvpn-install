@@ -7,8 +7,8 @@ function squi {
 read -p "Shareable RP [Y]es [N]o : " shr
 [[ ! $shr =~ Y|y|N|n ]] && squi
 }; squi
-MYIP=$(wget -qO- ipv4.icanhazip.com);shre=allow;rpstat=''
-[[ $shr =~ N|n ]] && shre=deny && rpstat=' not'
+MYIP=$(wget -qO- ipv4.icanhazip.com);shre=#http_access;rpstat=''
+[[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
 # UPDATE SOURCE LIST
 SI="-o Acquire::Check-Valid-Until=false -y"
 apt-get $SI update
@@ -62,19 +62,20 @@ StandardOutput=null
 [Install]
 WantedBy=multi-user.target" > /etc/systemd/system/iptab.service
 echo '#!/bin/bash
-iptables -A INPUT -i tun+ -j ACCEPT
-iptables -A FORWARD -i tun+ -j ACCEPT
-iptables -A INPUT -i tap+ -j ACCEPT
-iptables -A FORWARD -i tap+ -j ACCEPT
-iptables -A FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+iptables -I INPUT -i tun+ -j ACCEPT
+iptables -I FORWARD -i tun+ -j ACCEPT
+iptables -I INPUT -i tap+ -j ACCEPT
+iptables -I FORWARD -i tap+ -j ACCEPT
+iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT
 iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
 iptables -t nat -I POSTROUTING 2 -s 10.8.0.0/24 -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
-iptables -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT' > /sbin/iptab
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT' > /sbin/iptab
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/xxxxx/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
 # reload daemon
 systemctl daemon-reload
 # restart services
