@@ -4,17 +4,8 @@ UPDATE mysql.user SET plugin="mysql_native_password" WHERE User='root'; -- crede
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
-    `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-    `user_pass` varchar(32) COLLATE utf8_unicode_ci NOT NULL DEFAULT '1234',
-    `user_mail` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `user_phone` varchar(16) COLLATE utf8_unicode_ci DEFAULT NULL,
-    `user_online` tinyint(1) NOT NULL DEFAULT '0',
-    `user_enable` tinyint(1) NOT NULL DEFAULT '1',
-    `user_start_date` date NOT NULL,
-    `user_end_date` date NOT NULL,
-PRIMARY KEY (`user_id`),
-KEY `user_pass` (`user_pass`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+`user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+`user_online` tinyint(1) NOT NULL DEFAULT '0',PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 CREATE TABLE IF NOT EXISTS `log` (
     `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
