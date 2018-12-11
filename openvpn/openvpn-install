@@ -94,13 +94,13 @@ iptables -I OUTPUT -o eth0 -p tcp -m state --state ESTABLISHED --sport 22 -j ACC
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
 cd
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid/squid.conf
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
 # reload daemon
 systemctl daemon-reload
 # restart services
-systemctl restart {squid,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
-systemctl enable {squid,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Your Squid Proxy is'$rpstat' shareable.'
