@@ -10,7 +10,7 @@ read -p "Shareable RP [Y]es [N]o : " shr
 echo "Password for downloading the client configuration."
 while [[ $cnf == '' ]];do
 read -p "Password: " cnf;done
-MYIP=$(wget -qO- ipv4.icanhazip.com);shre=#http_access;rpstat=''
+MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 [[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
 # UPDATE SOURCE LIST
 SI="-o Acquire::Check-Valid-Until=false -y"
@@ -22,7 +22,7 @@ wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php5.list
 # INSTALL REQUIREMENTS
 apt update $SI
-apt-get $SI install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mariadb-server openvpn squid
+apt-get $SI install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mariadb-server openvpn squid3
 if [[ `uname -r` =~ "4.9" ]]; then
 apt remove --purge apache* $SI
 apt remove --purge php7* $SI
@@ -51,7 +51,10 @@ sed -i 's/\/home\/vps\/public_html/\/var\/www\/html/g' /etc/nginx/conf.d/vps.con
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn;mkdir log
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar" -qO- | tar x
-echo "CPASS=$cnf" >> script/config.sh
+sed -i "/CPASS/{s/.*\=.*//g}" script/config.sh
+if [[ `cat /etc/openvpn/script/config.sh` =~ "CPASS" ]];then
+	sed -i "/CPASS/{s/=.*/=$cnf/g}" script/config.sh
+else;echo "CPASS=$cnf" >> script/config.sh;fi
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf | sed -e "s/xxxx/$MYIP/g" > 1194.conf
 sysctl -w net.ipv4.ip_forward=1
 sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
