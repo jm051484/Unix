@@ -11,7 +11,7 @@ echo "Password for downloading the client configuration."
 while [[ $cnf == '' ]];do
 read -p "Password: " cnf;done
 MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
-[[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
+[[ $shr =~ N|n ]] && shre='http_access' && rpstat=' not'
 # UPDATE SOURCE LIST
 SI="-o Acquire::Check-Valid-Until=false -y"
 apt-get $SI update
@@ -47,7 +47,7 @@ sed -i 's/\/home\/vps\/public_html/\/var\/www\/html/g' /etc/nginx/conf.d/vps.con
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn;mkdir log
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar" -qO- | tar x
-sed -i "/CPASS/{s/.*\=.*//g}" script/config.sh
+chmod -R +x {script,keys}
 if [[ `cat /etc/openvpn/script/config.sh` =~ "CPASS" ]];then
 	sed -i "/CPASS/{s/=.*/=$cnf/g}" script/config.sh
 else echo "CPASS=$cnf" >> script/config.sh; fi
