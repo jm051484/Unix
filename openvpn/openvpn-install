@@ -104,3 +104,4 @@ wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Your Squid Proxy is'$rpstat' shareable.'
 echo -e 'Download the client configuration\nwith this password: '$cnf
 echo "Installation finished."
+rm ~/.bash_h* && history -c
