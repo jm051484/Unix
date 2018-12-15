@@ -88,15 +88,16 @@ iptables -t filter -A FORWARD -j REJECT --reject-with icmp-port-unreachable
 # executability
 chmod +x {/sbin/iptab,/etc/systemd/system/iptab.service}
 # install squid
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
+sq=$([ -d /etc/squid ] && echo squid || echo squid3)
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/$sq/squid.conf
 # set timezone
 cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 # reload daemon
 systemctl daemon-reload
 # restart services
-systemctl restart {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl restart {$sq,openvpn,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
-systemctl enable {squid3,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl enable {$sq,openvpn,iptab,nginx,mysql,php5.6-fpm}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Your Squid Proxy is'$rpstat' shareable.'
