@@ -95,8 +95,8 @@ push "dhcp-option DNS 67.207.67.3"
 push "redirect-gateway def1 bypass-dhcp"
 crl-verify crl.pem
 ca ca.crt
-cert $SERVER_NAME.crt
-key $SERVER_NAME.key
+cert '$SERVER_NAME'.crt
+key '$SERVER_NAME'.key
 tls-auth tls-auth.key 0
 dh dh.pem
 cipher AES-128-CBC
