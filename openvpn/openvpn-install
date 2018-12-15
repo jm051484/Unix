@@ -47,7 +47,7 @@ sed -i 's/\/home\/vps\/public_html/\/var\/www\/html/g' /etc/nginx/conf.d/vps.con
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn;mkdir log
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar" -qO- | tar x
-chmod -R +x {script,keys}
+chmod -R a+x {script,keys}
 if [[ `cat /etc/openvpn/script/config.sh` =~ "CPASS" ]];then
 	sed -i "/CPASS/{s/=.*/=$cnf/g}" script/config.sh
 else echo "CPASS=$cnf" >> script/config.sh; fi
