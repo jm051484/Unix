@@ -7,25 +7,25 @@ apt-get update
 apt-get upgrade -y
 apt-get install openvpn iptables openssl wget ca-certificates curl squid3 -y
 newclient () {
-	cp /etc/openvpn/client-template.txt "~/$1.ovpn"
+	cp /etc/openvpn/client-template.txt ~/$1.ovpn
 	{
 		echo "<ca>"
 		cat "/etc/openvpn/easy-rsa/pki/ca.crt"
 		echo "</ca>"
 
 		echo "<cert>"
-		cat "/etc/openvpn/easy-rsa/pki/issued/$1.crt"
+		cat "/etc/openvpn/easy-rsa/pki/issued/$CLIENT.crt"
 		echo "</cert>"
 
 		echo "<key>"
-		cat "/etc/openvpn/easy-rsa/pki/private/$1.key"
+		cat "/etc/openvpn/easy-rsa/pki/private/$CLIENT.key"
 		echo "</key>"
 		echo "key-direction 1"
 
 		echo "<tls-auth>"
 		cat "/etc/openvpn/tls-auth.key"
 		echo "</tls-auth>"
-	} >> "~/$1.ovpn"
+	} >> ~/$1.ovpn
 }
 	PORT="1194"
 	IP=$(wget -qO- ipv4.icanhazip.com)
@@ -121,16 +121,17 @@ http-proxy-option CUSTOM-HEADER Host i.line.me
 setenv opt block-outside-dns
 cipher AES-128-CBC
 auth-nocache" > /etc/openvpn/client-template.txt
-mv /etc/squid3/squid.conf /etc/squid3/squid.confx
+sq=$([ -d /etc/squid ] && echo squid || echo squid3)
+mv /etc/$sq/squid.conf /etc/$sq/squid.confx
 echo '
 http_access allow all
 via off
 http_port 993
 visible_hostname udp.team
-' > /etc/squid3/squid.conf
+' > /etc/$sq/squid.conf
 IFS="." oct=($(wget -qO- ipv4.icanhazip.com))
-systemctl restart {squid3,openvpn,iptab}
-newclient "client-${oct[3]}.ovpn"
+systemctl restart {$sq,openvpn,iptab}
+newclient "client-${oct[3]}"
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo "Finished!"
