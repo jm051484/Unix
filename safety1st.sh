@@ -65,10 +65,11 @@ if ! [[ `cat /etc/sysctl.conf` =~ "ip_forward" ]];then
 echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf; fi
 echo 1 > /proc/sys/net/ipv4/ip_forward
 systemctl daemon-reload
-systemctl enable iptables.service
+systemctl enable iptab
 cd /etc/openvpn
+if ! [ -d easy-rsa/EasyRSA-3.0.4 ];then
 wget -qO- https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz | tar xz
-mv EasyRSA-3.0.4 easy-rsa
+mv EasyRSA-3.0.4 easy-rsa; fi
 cd /etc/openvpn/easy-rsa/ || return
 SERVER_CN="cn_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
 SERVER_NAME="server_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
