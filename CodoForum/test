@@ -1,2 +1,2 @@
 #!/bin/bash
-$ff
+echo $ff
