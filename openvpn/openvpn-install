@@ -22,6 +22,7 @@ wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
 echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php5.list
 # INSTALL REQUIREMENTS
 apt update
+yes '' | apt $OPT dist-upgrade
 yes '' | apt $OPT upgrade
 if [[ `lsb_release -sr` =~ "9." ]]; then
 apt remove --purge apache* $OPT
