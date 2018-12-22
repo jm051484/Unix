@@ -13,3 +13,12 @@ while [[ $forum_dbpass == '' ]];do
 read -p "pass: " forum_dbpass; done
 # DATABASE
 mysql -uroot -e "`wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/CodoForum/table.sql | sed -e "s/codoforum/$forum_name/g" | sed -e "s/codouser/$forum_dbuser/g" | sed -e "s/passx01/$forum_dbpass/g"`"
+clear
+wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
+echo -e "Database has been updated.
+You can install now the Web UI
+using the following details:
+
+Database Name: $forum_name
+DB Username: $forum_dbuser
+DB Password: $forum_dbpass"
