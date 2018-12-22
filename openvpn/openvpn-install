@@ -23,7 +23,6 @@ echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sou
 # INSTALL REQUIREMENTS
 apt update
 yes '' | apt $OPT dist-upgrade
-yes '' | apt $OPT upgrade
 if [[ `lsb_release -sr` =~ "9." ]]; then
 apt remove --purge apache* $OPT
 apt remove --purge php7* $OPT
