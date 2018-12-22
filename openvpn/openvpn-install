@@ -15,6 +15,7 @@ MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 # UPDATE SOURCE LIST
 OPT='-o Acquire::Check-Valid-Until=false -yq -o DPkg::Options::=--force-confdef -o DPkg::Options::=--force-confnew --allow-unauthenticated'
 apt-get update
+sed -i 's/jessie/stretch/g' /etc/apt/sources.list
 # ADD PHP 5.6 SOURCE
 apt-get install $OPT apt-transport-https
 wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
