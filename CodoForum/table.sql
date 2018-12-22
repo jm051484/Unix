@@ -6,5 +6,5 @@ drop user if exists codouser;
 create database if not exists codoforum;
 create user if not exists codouser;
 grant all privileges on *.* to codouser@localhost;
-UPDATE mysql.user SET Password=PASSWORD(‘passx01’) WHERE user=”codouser”;
+UPDATE mysql.user SET Password=PASSWORD('passx01') WHERE user='codouser';
 flush privileges;
