@@ -1,7 +1,7 @@
 #!/bin/bash
 # BLOCK TORRENT
 portx() {
-		iptables -I $1 -p tcp --dport 1024:1193 -j DROP
+	iptables -I $1 -p tcp --dport 1024:1193 -j DROP
 	iptables -I $1 -p tcp --dport 1195:1644 -j DROP
 	iptables -I $1 -p tcp --dport 1647:65534 -j ACCEPT
 	iptables -I $1 -p udp --dport 1024:1193 -j DROP
