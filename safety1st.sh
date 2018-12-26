@@ -4,8 +4,7 @@ if ! [[ -e /etc/debian_version ]]; then
 echo For DEBIAN only.
 exit;fi
 apt-get update
-apt-get upgrade -y
-apt-get install openvpn iptables openssl wget ca-certificates curl squid3 -y
+apt-get install openvpn openssl squid -y
 newclient () {
 	cp /etc/openvpn/client-template.txt ~/$1.ovpn
 	{
