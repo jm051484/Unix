@@ -18,17 +18,19 @@ apt-get update
 # ADD PHP 5.6 SOURCE
 apt-get install $OPT apt-transport-https
 wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
-echo "deb https://packages.sury.org/php/ stretch main" > /etc/apt/sources.list.d/php5.list
+echo "deb https://packages.sury.org/php/ `lsb_release -sc` main" > /etc/apt/sources.list.d/php5.list
 # INSTALL REQUIREMENTS
+if [[ `lsb_release -si` == "Debian" ]];then
 sed -i 's/jessie/stretch/g' /etc/apt/sources.list
+else sed -i 's/xenial/bionic/g' /etc/apt/sources.list; fi
 apt update
-yes '' | apt $OPT dist-upgrade
+yes | apt $OPT dist-upgrade
 if [[ `lsb_release -sr` =~ "9." ]]; then
 apt remove --purge apache* $OPT
 apt remove --purge php7* $OPT
 apt autoremove $OPT
 apt autoclean $OPT;fi
-yes '' | apt $OPT upgrade
+yes | apt $OPT upgrade
 apt-get $OPT install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcrypt mariadb-server openvpn squid
 # START INSTALLATION
 # WEB DATA
