@@ -100,9 +100,9 @@ cp /usr/share/zoneinfo/Asia/Manila /etc/localtime
 # reload daemon
 systemctl daemon-reload
 # restart services
-systemctl restart {$sq,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl restart {$sq,openvpn@1194,iptab,nginx,mysql,php5.6-fpm}
 # enable on startup
-systemctl enable {$sq,openvpn,iptab,nginx,mysql,php5.6-fpm}
+systemctl enable {$sq,openvpn@1194,iptab,nginx,mysql,php5.6-fpm}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Your Squid Proxy is'$rpstat' shareable.'
