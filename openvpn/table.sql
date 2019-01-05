@@ -1,5 +1,6 @@
 SET sql_mode = '';
 SET GLOBAL sql_mode = '';
+UPDATE mysql.user SET plugin="" WHERE User='root'; -- fixed both; unix_socket - ubuntu default
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
