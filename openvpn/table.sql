@@ -1,11 +1,12 @@
 SET sql_mode = '';
 SET GLOBAL sql_mode = '';
-UPDATE mysql.user SET plugin="mysql_native_password" WHERE User='root'; -- credentials fix in ubuntu but error in debian
 CREATE DATABASE IF NOT EXISTS openvpn;
 USE openvpn;
 CREATE TABLE IF NOT EXISTS `user` (
-`user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
-`user_online` tinyint(1) NOT NULL DEFAULT '0',PRIMARY KEY (`user_id`)) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+    `user_online` tinyint(1) NOT NULL DEFAULT '0',
+PRIMARY KEY (`user_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 CREATE TABLE IF NOT EXISTS `log` (
     `log_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `user_id` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
