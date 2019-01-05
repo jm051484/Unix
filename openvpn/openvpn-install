@@ -17,12 +17,14 @@ OPT='-o Acquire::Check-Valid-Until=false -yq -o DPkg::Options::=--force-confdef 
 apt-get update
 # ADD PHP 5.6 SOURCE
 apt-get install $OPT apt-transport-https
-wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
-echo "deb https://packages.sury.org/php/ `lsb_release -sc` main" > /etc/apt/sources.list.d/php5.list
 # INSTALL REQUIREMENTS
-if [[ `lsb_release -si` =~ Debian ]];then
-sed -i 's/jessie/stretch/g' /etc/apt/sources.list
-else sed -i 's/xenial/bionic/g' /etc/apt/sources.list; fi
+if [[ `lsb_release -si` = Debian ]];then
+	sed -i 's/jessie/stretch/g' /etc/apt/sources.list
+	wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
+	echo "deb https://packages.sury.org/php/ `lsb_release -sc` main" > /etc/apt/sources.list.d/php5.list
+else
+	sed -i 's/xenial/bionic/g' /etc/apt/sources.list; fi
+	add-apt-repository -y ppa:ondrej/php
 apt update
 yes | apt $OPT dist-upgrade
 if [[ `lsb_release -sr` =~ 9.|18. ]]; then
