@@ -58,8 +58,7 @@ if [[ `cat script/config.sh` =~ "CPASS" ]];then
 	sed -i "/CPASS/{s/=.*/=$cnf/g}" script/config.sh
 else echo "CPASS=$cnf" >> script/config.sh; fi
 wget -q https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf
-if [[ `cat /etc/sysctl.conf` =~ "ip_forward" ]];then
-	sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf; fi
+sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf
 sysctl -p
 # create IP Table Service
 echo "[Unit]
