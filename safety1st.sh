@@ -131,7 +131,7 @@ echo 'http_access allow all
 via off
 http_port 993
 visible_hostname udp.team' > /etc/$sq/squid.conf
-systemctl restart {$sq,openvpn,iptab}
+systemctl restart {$sq,openvpn@server,iptab}
 newclient
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
