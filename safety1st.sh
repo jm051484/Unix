@@ -51,8 +51,8 @@ iptables -t mangle -X
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
-iptables -t nat -A POSTROUTING -o $(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1) -s 10.10.10.0/24 -j MASQUERADE
-iptables -I FORWARD -s 10.10.10.0/24 -j ACCEPT
+iptables -t nat -A POSTROUTING -o $(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1) -j MASQUERADE
+iptables -I FORWARD -j ACCEPT
 iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT" > /sbin/iptab
 	chmod a+x /sbin/iptab;iptab
 	echo "[Unit]
@@ -75,6 +75,7 @@ cd /etc/openvpn
 if ! [ -d easy-rsa/EasyRSA-3.0.4 ];then
 wget -qO- https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz | tar xz
 mv EasyRSA-3.0.4 easy-rsa; fi
+if ! [ -f /etc/openvpn/server.conf ];then
 cd /etc/openvpn/easy-rsa/ || return
 SERVER_CN="cn_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
 SERVER_NAME="server_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
@@ -89,7 +90,7 @@ set_var EASYRSA_CRL_DAYS 3650" > vars
 	./easyrsa gen-crl
 	openvpn --genkey --secret /etc/openvpn/tls-auth.key
 	cp pki/ca.crt pki/private/ca.key dh.pem pki/issued/$SERVER_NAME.crt pki/private/$SERVER_NAME.key /etc/openvpn/easy-rsa/pki/crl.pem /etc/openvpn
-	chmod a+x /etc/openvpn/crl.pem
+	chmod a+x /etc/openvpn/crl.pem; fi
 	# Generate server.conf
 	echo 'port 1194
 proto tcp
@@ -102,7 +103,6 @@ tls-auth tls-auth.key 0
 dh dh.pem
 topology subnet
 server 10.10.0.0 255.255.255.0
-ifconfig-pool-persist ipp.txt
 push "dhcp-option DNS 67.207.67.2"
 push "dhcp-option DNS 67.207.67.3"
 push "redirect-gateway def1 bypass-dhcp"
