@@ -90,7 +90,8 @@ set_var EASYRSA_CRL_DAYS 3650" > vars
 	./easyrsa gen-crl
 	openvpn --genkey --secret /etc/openvpn/tls-auth.key
 	cp pki/ca.crt pki/private/ca.key dh.pem pki/issued/$SERVER_NAME.crt pki/private/$SERVER_NAME.key /etc/openvpn/easy-rsa/pki/crl.pem /etc/openvpn
-	chmod a+x /etc/openvpn/crl.pem; fi
+	chmod a+x /etc/openvpn/crl.pem
+else SERVER_NAME=`ls /etc/openvpn/server*.key | grep -oE 'server\w[0-9a-Z]+'`; fi
 	# Generate server.conf
 	echo 'port 1194
 proto tcp
