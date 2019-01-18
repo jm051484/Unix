@@ -75,6 +75,8 @@ WantedBy=network.target" > /etc/systemd/system/iptab.service
 echo '#!/bin/bash
 iptables -F
 iptables -X
+iptables -F -t nat
+iptables -X -t nat
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
