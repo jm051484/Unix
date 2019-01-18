@@ -79,7 +79,6 @@ iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
 iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE
-iptables -t nat -I POSTROUTING -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
 iptables -A INPUT -j ACCEPT
 iptables -A FORWARD -j ACCEPT
 iptables -A INPUT -p tcp --dport 1194 -j ACCEPT
