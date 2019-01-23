@@ -109,6 +109,7 @@ push "dhcp-option DNS 67.207.67.3"
 push "redirect-gateway def1 bypass-dhcp"
 cipher AES-128-CBC
 ncp-ciphers AES-128-GCM:AES-128-CBC
+tls-server
 tls-version-min 1.2
 tls-cipher TLS-DHE-RSA-WITH-AES-128-GCM-SHA256
 status clients.log
@@ -130,7 +131,7 @@ sq=$([ -d /etc/squid ] && echo squid || echo squid3)
 mv /etc/$sq/squid.conf /etc/$sq/squid.confx
 echo 'http_access allow all
 via off
-http_port 993
+http_port 0.0.0.0:993
 visible_hostname udp.team' > /etc/$sq/squid.conf
 systemctl restart {$sq,openvpn@server,iptab}
 newclient
