@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SE Server Scripts</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width">
+		<meta name="og:title" content="SE Server Scripts">
+		<meta name="og:image" content="pics/icon.png">
+		<meta name="og:author" content="Dexter Cellona Banawon">
+		<meta name="og:description" content="Ubuntu, CentOS, Debian">
+		<meta name="og:url" content="https://x-dcb.github.io/Unix/">
+		<link rel="icon" href="pics/icon.png" type="image/x-icon" />
+	</head>
+<style>
+* {
+	text-align: center;
+	position: relative;
+	}
+input[type=text] {
+	width:60%;
+	height:30px;
+	}
+button {
+	top:-7px;
+	left:10px;
+	height:40px;
+	width:70px;
+	}
+input[type=text],button {
+	margin:-20px 10px -20px 0px;
+	bottom:10px;
+	border-radius: 25px;
+	box-shadow: 0 0 25px blue;
+	}
+h1 {
+	top: 25px;
+	}
+h3 {
+	width:70%;
+	margin:7px 0px 20px 0px;
+	left:20%;
+	text-align:left;
+}
+</style>
+<body>
+<h1 class="tt">SE Server Scripts</h1>
+<div>By: Dexter Cellona Banawon</div>
+  <h3>Ubuntu SNAT</h3>
+<input readonly="true" type="text" id="ubusnat" value="wget https://git.io/fbpaR -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'ubusnat')">Copy</button>
+  <h3>Ubuntu LBC</h3>
+<input readonly="true" type="text" id="lbcins" value="wget https://git.io/fF9lL -O lbc_install && chmod +x lbc_install && ./lbc_install" /><button onclick="copyx(this,'lbcins')">Copy</button>
+  <h3>CentOS SNAT</h3>
+<input readonly="true" type="text" id="centsnat" value="wget https://git.io/fF9lq -O serverSetupSNAT && chmod +x serverSetupSNAT && ./serverSetupSNAT" /><button onclick="copyx(this,'centsnat')">Copy</button>
+  <h3>CentOS LBC</h3>
+<input readonly="true" type="text" id="centlbc" value="wget https://git.io/fF9BZ -O serverSetup+LBC && chmod +x serverSetup+LBC && ./serverSetup+LBC" /><button onclick="copyx(this,'centlbc')">Copy</button>
+</body>
+<script language="javascript">
+  function copyx(bttn,txtbox) {
+  var btnItems = document.getElementsByTagName("button");
+  for(var i = 0;i < btnItems.length; i++) {
+  btnItems[i].innerHTML="Copy";
+  btnItems[i].disabled=false;}
+  bttn.innerHTML="Copied";
+  bttn.disabled=true;
+  var copyText = document.getElementById(txtbox);
+  copyText.select();
+  document.execCommand("copy");}
+</script>
+</html>

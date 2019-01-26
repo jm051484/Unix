@@ -1,0 +1,28 @@
+#!/bin/bash
+export DEBIAN_FRONTEND=noninteractive
+if ! [[ -e /etc/debian_version ]]; then
+echo For DEBIAN only.
+exit;fi
+# WEB DATA
+cd /var/www/html
+wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar" -qO- | tar x
+# OPENVPN SERVER SETTINGS
+cd /etc/openvpn
+wget -qO 1194.conf https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf
+# ROUTING TABLE
+MYIP=$(wget -qO- ipv4.icanhazip.com)
+echo 1 > /proc/sys/net/ipv4/ip_forward
+wget -qO- https://github.com/X-DCB/Unix/blob/master/openvpn/rem.rules | bash
+echo '#!/bin/bash
+iptables -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+iptables -I INPUT -i tun+ -j ACCEPT
+iptables -I FORWARD -i tun+ -j ACCEPT
+iptables -I INPUT -i tap+ -j ACCEPT
+iptables -I FORWARD -i tap+ -j ACCEPT
+iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -I POSTROUTING 2 -s 10.8.0.0/24 -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT' > /sbin/iptab
+chmod +x /sbin/iptab;iptab
+bash -c "$(wget -qO- https://git.io/fxxHa)"
+echo "Installation finished."

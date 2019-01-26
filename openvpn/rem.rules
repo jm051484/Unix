@@ -1,0 +1,21 @@
+#!/bin/bash
+MYIP=$(wget -qO- ipv4.icanhazip.com)
+iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -j SNAT --to $MYIP
+iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+iptables -t filter -D FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -t filter -D FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -D INPUT -i tun+ -j ACCEPT
+iptables -D FORWARD -i tun+ -j ACCEPT
+iptables -D INPUT -i tap+ -j ACCEPT
+iptables -D FORWARD -i tap+ -j ACCEPT
+iptables -D FORWARD -s 10.8.0.0/24 -j ACCEPT
+iptables -t filter -D FORWARD -s 10.8.0.0/24 -j SNAT --to $MYIP
+iptables -t nat -D POSTROUTING -s 10.8.0.0/24 -j SNAT --to-source $MYIP
+iptables -t nat -D POSTROUTING -s 0.0.0.0/32 -j SNAT --to-source $MYIP
+iptables -D FORWARD -s 0.0.0.0/32 -j ACCEPT
+iptables -t filter -D FORWARD -s 0.0.0.0/32 -j ACCEPT
+iptables -t nat -D POSTROUTING -s 0.0.0.0/32 -o eth0 -j MASQUERADE
+iptables -t filter -D FORWARD -s 0.0.0.0/24 -j ACCEPT
+iptables -t nat -D POSTROUTING -s 0.0.0.0/24 -o eth0 -j MASQUERADE
+iptables -t nat -D POSTROUTING -s 0.0.0.0/24 -j SNAT --to-source $MYIP
+iptables -t filter -D FORWARD -s 10.8.0.0/8 -j ACCEPT
