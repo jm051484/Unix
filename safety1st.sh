@@ -33,7 +33,7 @@ newclient() {
 	`cat /etc/openvpn/tls-auth.key`
 	</tls-auth>" > ~/$FNAME
 }
-	# Reapply IPTABLES
+	# ReApply IPTABLES
 	echo "#!/bin/sh
 iptables -F
 iptables -X
