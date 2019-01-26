@@ -134,4 +134,4 @@ newclient
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo "Finished!"
-echo "Your client config is available at /root/$FNAME.ovpn"
+echo "Your client config is available at /root/$FNAME.ovpn"-
