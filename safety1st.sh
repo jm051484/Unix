@@ -79,11 +79,11 @@ set_var EASYRSA_REQ_CN $SERVER_CN
 set_var EASYRSA_CRL_DAYS 3650" > vars
 	./easyrsa init-pki
 	./easyrsa --batch build-ca nopass
+	./easyrsa gen-crl
+	openvpn --genkey --secret /etc/openvpn/tls-auth.key
 	openssl dhparam -out dh.pem $DH_KEY_SIZE
 	./easyrsa build-server-full $SERVER_NAME nopass
 	./easyrsa build-client-full $CLIENT nopass
-	./easyrsa gen-crl
-	openvpn --genkey --secret /etc/openvpn/tls-auth.key
 	cp pki/ca.crt pki/private/ca.key dh.pem pki/issued/$SERVER_NAME.crt pki/private/$SERVER_NAME.key /etc/openvpn/easy-rsa/pki/crl.pem /etc/openvpn
 	chmod a+x /etc/openvpn/crl.pem
 else SERVER_NAME=`ls /etc/openvpn/server*.key | grep -oE 'server_[0-9a-Z]+'`; fi
