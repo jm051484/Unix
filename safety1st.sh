@@ -19,19 +19,20 @@ RSA_KEY_SIZE="2048"
 CLIENT="Client"
 FNAME=client-${IP##*.}.ovpn
 newclient() {
-	echo "`cat /etc/openvpn/client-template.txt`
-	<ca>
-	`cat /etc/openvpn/ca.crt`
-	</ca>
-	<cert>
-	`cat /etc/openvpn/easy-rsa/pki/issued/$CLIENT.crt`
-	</cert>
-	<key>
-	`cat /etc/openvpn/easy-rsa/pki/private/$CLIENT.key`
-	</key>
-	<tls-auth>
-	`cat /etc/openvpn/tls-auth.key`
-	</tls-auth>" > ~/$FNAME
+	echo -e "`cat /etc/openvpn/client-template.txt`
+<ca>
+`cat /etc/openvpn/ca.crt`
+</ca>
+<cert>
+`cat /etc/openvpn/easy-rsa/pki/issued/$CLIENT.crt`
+</cert>
+<key>
+`cat /etc/openvpn/easy-rsa/pki/private/$CLIENT.key`
+</key>
+<tls-auth>
+`cat /etc/openvpn/tls-auth.key`
+</tls-auth>" > ~/$FNAME
+echo "Your client config is available at /root/$FNAME"
 }
 	# Reapply IPTABLES
 	echo "#!/bin/sh
@@ -129,8 +130,7 @@ via off
 http_port 0.0.0.0:993
 visible_hostname udp.team' > /etc/$sq/squid.conf
 systemctl restart {$sq,openvpn@server,iptab}
-newclient
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo "Finished!"
-echo "Your client config is available at /root/$FNAME.ovpn"
+newclient
