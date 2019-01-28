@@ -66,11 +66,9 @@ sysctl -p
 systemctl daemon-reload
 systemctl enable iptab
 cd /etc/openvpn
-if ! [ -d easy-rsa/EasyRSA-3.0.4 ];then
+if ! [ -d easy-rsa ];then
 wget -qO- https://github.com/OpenVPN/easy-rsa/releases/download/v3.0.4/EasyRSA-3.0.4.tgz | tar xz
-mv EasyRSA-3.0.4 easy-rsa; fi
-if ! [ -f /etc/openvpn/server.conf ];then
-cd /etc/openvpn/easy-rsa/ || return
+mv EasyRSA-3.0.4 easy-rsa || return
 SERVER_CN="cn_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
 SERVER_NAME="server_$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 16 | head -n 1)"
 echo "set_var EASYRSA_KEY_SIZE $RSA_KEY_SIZE
@@ -85,7 +83,7 @@ set_var EASYRSA_CRL_DAYS 3650" > vars
 	openvpn --genkey --secret /etc/openvpn/tls-auth.key
 	cp pki/ca.crt pki/private/ca.key dh.pem pki/issued/$SERVER_NAME.crt pki/private/$SERVER_NAME.key /etc/openvpn/easy-rsa/pki/crl.pem /etc/openvpn
 	chmod a+x /etc/openvpn/crl.pem
-else SERVER_NAME=`ls /etc/openvpn/server*.key | grep -oE 'server\w[0-9a-Z]+'`; fi
+else SERVER_NAME=`ls /etc/openvpn/server*.key | grep -oE 'server_[0-9a-Z]+'`; fi
 	# Generate server.conf
 	echo 'port '$PORT'
 proto tcp
