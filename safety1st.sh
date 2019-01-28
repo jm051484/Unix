@@ -115,7 +115,7 @@ dev tun
 proto tcp
 remote-cert-tls server
 remote 127.0.0.1 $PORT
-http-proxy 128.199.72.186 993
+http-proxy $IP 993
 http-proxy-option VERSION 1.1
 http-proxy-option CUSTOM-HEADER Host weixin.qq.cn
 setenv opt block-outside-dns
