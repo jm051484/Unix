@@ -6,7 +6,8 @@ done
 [[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
 # reload
-systemctl restart {openvpn,squid3}
+sq=$([ -d /etc/squid ] && echo squid || echo squid3)
+systemctl restart {openvpn,$sq}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Openvpn Server has been restarted.'

@@ -10,19 +10,26 @@ wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simpl
 cd /etc/openvpn
 wget -qO 1194.conf https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf
 # ROUTING TABLE
-MYIP=$(wget -qO- ipv4.icanhazip.com)
-echo 1 > /proc/sys/net/ipv4/ip_forward
-wget -qO- https://github.com/X-DCB/Unix/blob/master/openvpn/rem.rules | bash
 echo '#!/bin/bash
-iptables -A FORWARD -j REJECT --reject-with icmp-port-unreachable
-iptables -I INPUT -i tun+ -j ACCEPT
-iptables -I FORWARD -i tun+ -j ACCEPT
-iptables -I INPUT -i tap+ -j ACCEPT
-iptables -I FORWARD -i tap+ -j ACCEPT
-iptables -I FORWARD -s 10.8.0.0/24 -j ACCEPT
-iptables -t nat -I POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
-iptables -t nat -I POSTROUTING 2 -s 10.8.0.0/24 -j SNAT --to-source $(wget -qO- ipv4.icanhazip.com)
-iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT' > /sbin/iptab
+iptables -F
+iptables -X
+iptables -F -t nat
+iptables -X -t nat
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -t nat -I POSTROUTING -o eth0 -j MASQUERADE
+iptables -A INPUT -j ACCEPT
+iptables -A FORWARD -j ACCEPT
+iptables -A INPUT -p tcp --dport 1194 -j ACCEPT
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m state --state ESTABLISHED --sport 22 -j ACCEPT
+iptables -A INPUT -p udp -m state --state ESTABLISHED --sport 53 -j ACCEPT
+iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED --dport 53 -j ACCEPT
+iptables -A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 22 -j ACCEPT
+iptables -t filter -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+sysctl -w net.ipv4.ip_forward=1
+' > /sbin/iptab
 chmod +x /sbin/iptab;iptab
 bash -c "$(wget -qO- https://git.io/fxxHa)"
 echo "Installation finished."
