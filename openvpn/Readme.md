@@ -1,7 +1,7 @@
 Debain 8+ OpenVPN Server Script with Monitoring Website
 
-wget "https://git.io/fxXUc" -qO- | bash
+bash -c "$(wget https://git.io/fxXUc -qO-)"
 
 Updater
 
-wget "https://git.io/fxxLe" -qO- | bash
+bash -c "$(wget https://git.io/fxxLe -qO)"
