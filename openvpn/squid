@@ -4,9 +4,9 @@ until [[ $shr =~ Y|y|N|n ]]; do
 	read -p "Shareable RP [Y]es [N]o : " shr
 done
 [[ $shr =~ N|n ]] && shre=http_access && rpstat=' not'
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/squid3/squid.conf
-# reload
 sq=$([ -d /etc/squid ] && echo squid || echo squid3)
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/squid.conf | sed -e "s/#http_access/$shre/g" | sed -e "s/x.x.x.x/$MYIP/g" > /etc/$sq/squid.conf
+# reload
 systemctl restart {openvpn,$sq}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
