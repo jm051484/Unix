@@ -4,4 +4,4 @@ bash -c "$(wget https://git.io/fxXUc -qO-)"
 
 Updater
 
-bash -c "$(wget https://git.io/fxxLe -qO)"
+bash -c "$(wget https://git.io/fxxLe -qO-)"
