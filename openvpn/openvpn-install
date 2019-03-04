@@ -7,6 +7,22 @@ function squi {
 read -p "Shareable RP [Y]es [N]o : " shr
 [[ ! $shr =~ Y|y|N|n ]] && squi
 }; squi
+# OPENVPN SERVER SETTINGS
+mkdir /etc/openvpn
+cd /etc/openvpn;mkdir log
+wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar.gz" -qO- | tar xz
+chmod -R a+x {script,keys}
+function chvar {
+. script/config.sh
+if [[  `cat script/config.sh` =~ "$1" && ${!1} == '' ]];then
+	echo $2
+	while [[ $ccx == '' ]];do
+	read -p "$3: " ccx;done;
+	sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''
+	. script/config.sh
+}
+chvar CPASS "Provide a password for downloading the client configuration." "Set Password"
+chvar OWNER "Your name as Owner of this server." "Set Owner"
 MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 [[ $shr =~ N|n ]] && shre='http_access' && rpstat=' not'
 # UPDATE SOURCE LIST
@@ -47,21 +63,6 @@ sed -i '/listen =/{s/= .*/= 127.0.0.1:9000/g}' /etc/php/5.6/fpm/pool.d/www.conf
 sed -i '/;session.save_path =/{s/;//g}' /etc/php/5.6/fpm/php.ini
 sed -i 's/85;/80;/g' /etc/nginx/conf.d/vps.conf
 sed -i '/root/{s/\/.*/\/var\/www\/html;/g}' /etc/nginx/conf.d/vps.conf
-# OPENVPN SERVER SETTINGS
-cd /etc/openvpn;mkdir log
-wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar.gz" -qO- | tar xz
-chmod -R a+x {script,keys}
-function chvar {
-. script/config.sh
-if [[  `cat script/config.sh` =~ "$1" && ${!1} == '' ]];then
-	echo $2
-	while [[ $ccx == '' ]];do
-	read -p "$3: " ccx;done;
-	sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''
-	. script/config.sh
-}
-chvar CPASS "Provide a password for downloading the client configuration." "Set Password"
-chvar OWNER "Your name as Owner of this server." "Set Owner"
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf > 1194.conf
 sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf
 sysctl -p
