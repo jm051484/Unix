@@ -5,11 +5,13 @@ echo For DEBIAN only.
 exit;fi
 function chvar {
 . script/config.sh
-if [[  `cat script/config.sh` =~ "$1" && ${!1} == '' ]];then
+[[  `cat script/config.sh` =~ "$1" ]] || echo "$1=" >> script/config.sh
+if [[ ${!1} == '' ]];then
           echo $2
           while [[ $ccx == '' ]];do
           read -p "$3: " ccx;done;
-          sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''; . script/config.sh
+          sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''
+. script/config.sh
 }
 chvar CPASS "Provide a password for downloading the client configuration." "Set Password"
 chvar OWNER "Your name as Owner of this server." "Set Owner"
