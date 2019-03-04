@@ -37,7 +37,7 @@ apt-get $OPT install nginx php5.6 php5.6-fpm php5.6-cli php5.6-mysql php5.6-mcry
 # START INSTALLATION
 # WEB DATA
 cd /var/www/html
-wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar" -qO- | tar x
+wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar.gz" -qO- | tar xz
 mv *html oldhtml
 # MYSQL SETTINGS
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/table.sql | mysql -uroot

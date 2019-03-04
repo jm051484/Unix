@@ -5,7 +5,7 @@ echo For DEBIAN only.
 exit;fi
 # WEB DATA
 cd /var/www/html
-wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar" -qO- | tar x
+wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar.gz" -qO- | tar xz
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn
 wget -qO 1194.conf https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf
