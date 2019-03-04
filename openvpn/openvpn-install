@@ -10,6 +10,9 @@ read -p "Shareable RP [Y]es [N]o : " shr
 echo "Provide a password for downloading the client configuration."
 while [[ $cnf == '' ]];do
 read -p "Set Password: " cnf;done
+echo "Your name as Owner of this server."
+while [[ $ownx == '' ]];do
+read -p "Set Owner: " ownx;done
 MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 [[ $shr =~ N|n ]] && shre='http_access' && rpstat=' not'
 # UPDATE SOURCE LIST
@@ -52,11 +55,15 @@ sed -i 's/85;/80;/g' /etc/nginx/conf.d/vps.conf
 sed -i '/root/{s/\/.*/\/var\/www\/html;/g}' /etc/nginx/conf.d/vps.conf
 # OPENVPN SERVER SETTINGS
 cd /etc/openvpn;mkdir log
-wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar" -qO- | tar x
+wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar.gz" -qO- | tar xz
 chmod -R a+x {script,keys}
-if [[ `cat script/config.sh` =~ "CPASS" ]];then
-	sed -i "/CPASS/{s/=.*/=$cnf/g}" script/config.sh
-else echo "CPASS=$cnf" >> script/config.sh; fi
+function chvar {
+if [[ $1 != '' && $2 != '' && `cat script/config.sh` =~ "$1" ]];then
+	sed -i "/$1/{s/=.*/=$2/g}" script/config.sh; fi
+echo $1 $2
+}
+chvar CPASS $cnf
+chvar OWNER $ownx
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf > 1194.conf
 sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf
 sysctl -p
