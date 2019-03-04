@@ -7,12 +7,6 @@ function squi {
 read -p "Shareable RP [Y]es [N]o : " shr
 [[ ! $shr =~ Y|y|N|n ]] && squi
 }; squi
-echo "Provide a password for downloading the client configuration."
-while [[ $cnf == '' ]];do
-read -p "Set Password: " cnf;done
-echo "Your name as Owner of this server."
-while [[ $ownx == '' ]];do
-read -p "Set Owner: " ownx;done
 MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 [[ $shr =~ N|n ]] && shre='http_access' && rpstat=' not'
 # UPDATE SOURCE LIST
@@ -58,12 +52,16 @@ cd /etc/openvpn;mkdir log
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar.gz" -qO- | tar xz
 chmod -R a+x {script,keys}
 function chvar {
-if [[ $1 != '' && $2 != '' && `cat script/config.sh` =~ "$1" ]];then
-	sed -i "/$1/{s/=.*/=$2/g}" script/config.sh; fi
-echo $1 $2
+. script/config.sh
+if [[  `cat script/config.sh` =~ "$1" && ${!1} == '' ]];then
+	echo $2
+	while [[ $ccx == '' ]];do
+	read -p "$3: " ccx;done;
+	sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''
+	. script/config.sh
 }
-chvar CPASS $cnf
-chvar OWNER $ownx
+chvar CPASS "Provide a password for downloading the client configuration." "Set Password"
+chvar OWNER "Your name as Owner of this server." "Set Owner"
 wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf > 1194.conf
 sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf
 sysctl -p
@@ -116,6 +114,6 @@ systemctl enable {$sq,openvpn@1194,iptab,nginx,mysql,php5.6-fpm}
 clear
 wget -qO- "https://raw.githubusercontent.com/X-DCB/Unix/master/banner" | bash
 echo 'Your Squid Proxy is'$rpstat' shareable.'
-echo -e 'Download the client configuration\nwith this password: '$cnf
+echo -e 'Download the client configuration\nwith this password: '$CPASS
 echo "Installation finished."
 history -c

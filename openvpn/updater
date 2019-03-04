@@ -3,6 +3,16 @@ export DEBIAN_FRONTEND=noninteractive
 if ! [[ -e /etc/debian_version ]]; then
 echo For DEBIAN only.
 exit;fi
+function chvar {
+. script/config.sh
+if [[  `cat script/config.sh` =~ "$1" && ${!1} == '' ]];then
+          echo $2
+          while [[ $ccx == '' ]];do
+          read -p "$3: " ccx;done;
+          sed -i "/$1/{s/=.*/=$ccx/g}" script/config.sh; fi; ccx=''; . script/config.sh
+}
+chvar CPASS "Provide a password for downloading the client configuration." "Set Password"
+chvar OWNER "Your name as Owner of this server." "Set Owner"
 # WEB DATA
 cd /var/www/html
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/webfiles-simple.tar.gz" -qO- | tar xz
