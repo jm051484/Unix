@@ -11,6 +11,7 @@ read -p "Shareable RP [Y]es [N]o : " shr
 mkdir /etc/openvpn
 cd /etc/openvpn;mkdir log
 wget "https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/openvpn_X-DCB.tar.gz" -qO- | tar xz
+wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf > 1194.conf
 chmod -R a+x {script,keys}
 function chvar {
 . script/config.sh
@@ -64,7 +65,6 @@ sed -i '/listen =/{s/= .*/= 127.0.0.1:9000/g}' /etc/php/5.6/fpm/pool.d/www.conf
 sed -i '/;session.save_path =/{s/;//g}' /etc/php/5.6/fpm/php.ini
 sed -i 's/85;/80;/g' /etc/nginx/conf.d/vps.conf
 sed -i '/root/{s/\/.*/\/var\/www\/html;/g}' /etc/nginx/conf.d/vps.conf
-wget -qO- https://raw.githubusercontent.com/X-DCB/Unix/master/openvpn/1194.conf > 1194.conf
 sed -i '/net.ipv4.ip_forward/{s/#//g}' /etc/sysctl.conf
 sysctl -p
 # create IP Table Service
