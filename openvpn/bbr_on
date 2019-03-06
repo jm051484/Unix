@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Do you want to the reboot system for the TCB BBR to teake effect?"
+echo "Do you want to the reboot system for the TCB BBR to take effect?"
 while [[ ! $tbr =~ Y|y|N|n ]];do
 read -ep "[Y/N]:  " tbr;done
 if [[ ! `cat /sbin/iptab` =~ "tcp_bbr" && $tbr =~ Y|y ]];then
