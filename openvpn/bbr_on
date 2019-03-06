@@ -1,12 +1,12 @@
 #!/bin/bash
-if [[ ! `cat /sbin/iptab` =~ "tcp_bbr" ]];then
+echo "Do you want to the reboot system for the TCB BBR to teake effect?"
+while [[ ! $tbr =~ Y|y|N|n ]];do
+read -ep "[Y/N]:  " tbr;done
+if [[ ! `cat /sbin/iptab` =~ "tcp_bbr" && $tbr =~ Y|y ]];then
 brloc=/etc/modules-load.d/modules.conf
 echo 'if [[ ! `cat $brloc` =~ "tcp_bbr" ]];then
 modprobe tcp_bbr
 echo tcp_bbr >> $brloc; fi
 sysctl -w net.core.default_qdisc=fq
 sysctl -w net.ipv4.tcp_congestion_control=bbr' >> /sbin/iptab
-echo "Do you want to the reboot system for the TCB BBR to teake effect? [Y/N]"
-while [[ ! $tbr =~ Y|y|N|n ]];do
-read -ep "[Y/N]:  " tbr;done
-[[ $tbr =~ Y|y ]] && shutdown -r now; fi
+shutdown -r now; fi
