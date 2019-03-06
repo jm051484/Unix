@@ -4,7 +4,7 @@ while [[ ! $tbr =~ Y|y|N|n ]];do
 read -ep "[Y/N]:  " tbr;done
 if [[ ! `cat /sbin/iptab` =~ "tcp_bbr" && $tbr =~ Y|y ]];then
 echo 'brloc=/etc/modules-load.d/modules.conf
- [[ ! `cat $brloc` =~ "tcp_bbr" ]];then
+if [[ ! `cat $brloc` =~ "tcp_bbr" ]];then
 modprobe tcp_bbr
 echo tcp_bbr >> $brloc; fi
 sysctl -w net.core.default_qdisc=fq
