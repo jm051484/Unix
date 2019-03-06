@@ -1,0 +1,10 @@
+#!/bin/bash
+if [[ ! `cat /sbin/iptab` =~ "tcp_bbr" ]];then
+brloc=/etc/modules-load.d/modules.conf
+echo 'if [[ `cat $brloc` =~ "tcp_bbr" ]];then
+modprobe tcp_bbr
+echo bbr > /proc/sys/net/ipv4/tcp_congestion_control; fi' >> /sbin/iptab
+echo "Do you want to the reboot system for the TCB BBR to teake effect? [Y/N]"
+while [[ ! $tbr =~ Y|y|N|n ]];do
+read -ep "[Y/N]:  " tbr;done
+[[ $tbr =~ Y|y ]] && shutdown -r now; fi
