@@ -31,14 +31,14 @@ MYIP=$(wget -qO- ipv4.icanhazip.com);rpstat='';shre='#http_access'
 OPT='-o Acquire::Check-Valid-Until=false -yq -o DPkg::Options::=--force-confdef -o DPkg::Options::=--force-confnew --allow-unauthenticated'
 apt-get update
 # ADD PHP 5.6 SOURCE
-apt-get install $OPT apt-transport-https
+sed -i 's/jessie/stretch/g' /etc/apt/sources.list
+sed -i 's/xenial/bionic/g' /etc/apt/sources.list
+apt-get install $OPT apt-transport-https software-properties-common
 # INSTALL REQUIREMENTS
 if [[ `lsb_release -si` = Debian ]];then
-	sed -i 's/jessie/stretch/g' /etc/apt/sources.list
 	wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
 	echo "deb https://packages.sury.org/php/ `lsb_release -sc` main" > /etc/apt/sources.list.d/php5.list
 else
-	sed -i 's/xenial/bionic/g' /etc/apt/sources.list
 	add-apt-repository -y ppa:ondrej/php; fi
 apt update
 yes | apt $OPT dist-upgrade
