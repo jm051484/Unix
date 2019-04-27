@@ -6,6 +6,7 @@ function setx {
 echo '#!/bin/bash' > /sbin/opti-rev
 setx ipv4 tcp_rmem '65535 131072 4194304'
 setx ipv4 tcp_wmem '65535 131072 194304'
+setx ipv4 ip_default_ttl 50
 setx core wmem_default 262144
 setx core wmem_max 4194304
 setx core rmem_default 262144
