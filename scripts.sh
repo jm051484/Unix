@@ -7,7 +7,8 @@ if [ ! -f /etc/debian* ]; then
 	exit 1; fi
 export DEBIAN_FRONTEND=noninteractive
 
-wget https://github.com/X-DCB/Unix/raw/master/scripts.tar.gz -qO- | tar xz -C /usr/bin
+cd /usr/bin
+wget https://github.com/X-DCB/Unix/raw/master/scripts.tar.gz -qO- | tar xz
 
 chmod +x {delete.sh,menu.sh,resvis.sh,user-list.sh,user-login.sh,usernew.sh}
 
