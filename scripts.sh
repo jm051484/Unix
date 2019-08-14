@@ -7,10 +7,16 @@ if [ ! -f /etc/debian* ]; then
 	exit 1; fi
 export DEBIAN_FRONTEND=noninteractive
 
-cd /usr/bin
+dirx=/usr/bin/X-DCB
+mkdir=$dirx
+cd $dirx
+
+sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
 wget https://github.com/X-DCB/Unix/raw/master/scripts.tar.gz -qO- | tar xz
 
-chmod +x {delete.sh,menu.sh,resvis.sh,user-list.sh,user-login.sh,usernew.sh}
+chmod +x -R $dirx
+
+. /etc/profile
 
 echo -ne "\nScripts added.\n
 Script by Dexter Cellona Banawon\n"
