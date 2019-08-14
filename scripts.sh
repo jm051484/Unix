@@ -8,7 +8,7 @@ if [ ! -f /etc/debian* ]; then
 export DEBIAN_FRONTEND=noninteractive
 
 dirx=/usr/bin/X-DCB
-mkdir=$dirx
+mkdir $dirx 2> /dev/null
 cd $dirx
 
 sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
