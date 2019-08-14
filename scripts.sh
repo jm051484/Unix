@@ -11,7 +11,7 @@ dirx=/usr/bin/X-DCB
 mkdir $dirx 2> /dev/null
 cd $dirx
 
-sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
+[[ `cat /etc/profile` =~ 'X-DCB' ]] || sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
 wget https://github.com/X-DCB/Unix/raw/master/scripts.tar.gz -qO- | tar xz
 
 chmod +x -R $dirx
