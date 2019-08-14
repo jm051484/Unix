@@ -11,12 +11,14 @@ dirx=/usr/bin/X-DCB
 mkdir $dirx 2> /dev/null
 cd $dirx
 
-[[ `cat /etc/profile` =~ 'X-DCB' ]] || sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
+if [[ ! `cat /etc/profile` =~ 'X-DCB' ]]; then
+	sed -i "s|export|PATH\+=:$dirx\nexport|g" /etc/profile
+	PATH+=:$dirx
+	export PATH; fi
+
 wget https://github.com/X-DCB/Unix/raw/master/scripts.tar.gz -qO- | tar xz
 
 chmod +x -R $dirx
-
-. /etc/profile
 
 echo -ne "\nScripts added.\n
 Script by Dexter Cellona Banawon\n"
