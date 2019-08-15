@@ -11,6 +11,7 @@ apt install -y stunnel4
 wget https://github.com/X-DCB/Unix/raw/master/stunnel.tar.gz -qO- | tar xz -C /etc/stunnel
 
 sed -i '/ENABLED=/{s/0/1/g}' {/etc/default/stunnel4,/etc/init.d/stunnel4}
+system daemon-reload
 systemctl restart stunnel4
 
 echo -ne "\nStunnel installed.\n
