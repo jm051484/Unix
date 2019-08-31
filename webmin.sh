@@ -7,6 +7,9 @@ if [ ! -f /etc/debian* ]; then
 	exit 1; fi
 export DEBIAN_FRONTEND=noninteractive
 
+if [ -x /usr/share/webmin/miniserv.pl ]; then
+	echo -e "Webmin already installed.\n"
+else
 apt-get install apt-transport-https software-properties-common -y
 # PHP 5.6
 wget https://packages.sury.org/php/apt.gpg -qO- | apt-key add -
@@ -26,10 +29,12 @@ sed -i '/listen =/{s/= .*/= 127.0.0.1:9000/g}' /etc/php/5.6/fpm/pool.d/www.conf
 sed -i '/;session.save_path =/{s/;//g}' /etc/php/5.6/fpm/php.ini
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 echo "<?php phpinfo() ?>" > /home/vps/public_html/info.php
+echo -ne "\nWebmin installed.\n"; fi
 
-systemctl restart {php5.6-fpm,wenbmin}
+if [ "$(ps -A | grep miniserv.pl)" ]; then
+		echo -e "Webmin is active.\n"
+	else systemctl restart {php5.6-fpm,webmin}; fi
 
-echo -ne "\nWebmin installed.\n
-Script by Dexter Cellona Banawon\n"
+echo -ne "Script by Dexter Cellona Banawon\n"
 
 exit 0
