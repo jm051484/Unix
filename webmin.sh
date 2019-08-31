@@ -33,10 +33,9 @@ sed -i '/;session.save_path =/{s/;//g}' /etc/php/5.6/fpm/php.ini
 sed -i 's/ssl=1/ssl=0/g' /etc/webmin/miniserv.conf
 echo "<?php phpinfo() ?>" > /home/vps/public_html/info.php
 
-systemctl restart {php5.6-fpm,webmin}; fii
-echo -ne "\nWebmin installed.\nfA | grep miniserv.pl)" ]; then
-		echo -e "Webmin is active.\n"
-	else systemctl restart {php5.6-fpm,webmin}; fi
-echo -ne "Script by Dexter Cellona Banawon\n"
+systemctl restart {php5.6-fpm,webmin}
+echo -e "\nWebmin installed.\n"; fi
+
+echo -e "Script by Dexter Cellona Banawon\n"
 
 exit 0
