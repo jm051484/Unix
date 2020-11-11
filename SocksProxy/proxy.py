@@ -10,14 +10,14 @@ try:
 except:
    PORT = 80
 try:
-	TIMER = sys.argv[2]
+	TIMER = int(sys.argv[2])
 except:
 	TIMER = 50
 PASS = ""
 BUFLEN = 8196 * 8
 TIMEOUT = 60
 DEFAULT_HOST = "0.0.0.0:22"
-RESPONSE = "HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
 
 class Server(threading.Thread):
     def __init__(self, host, port):
@@ -31,7 +31,7 @@ class Server(threading.Thread):
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
         self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.soc.settimeout(2)
+        self.soc.settimeout(1)
         self.soc.bind((self.host, self.port))
         self.soc.listen(0)
         self.running = True
@@ -109,13 +109,23 @@ class ConnectionHandler(threading.Thread):
             self.targetClosed = True
 
     def log_time(self, msg):
-    	print(time.strftime("[%H:%M:%S]"), msg)
+    	#print(time.strftime("[%H:%M:%S]"), msg)
+    	pass
 
     def run(self):
         try:
             self.client_buffer = self.client.recv(BUFLEN)
+            
+            strbuff = str(self.client_buffer)
 
             hostPort = self.findHeader(self.client_buffer, "X-Real-Host")
+            
+            if "CONNECT" in strbuff:
+            	f=strbuff.find('CONNECT')
+            	cc=strbuff[f:strbuff.find('\r\n',f)]
+            	x=cc.find(' ')
+            	hostPort=cc[x:cc.find(' ',x+1)]
+            	print("found:", hostPort)
 
             if hostPort == "":
                 hostPort = DEFAULT_HOST
@@ -133,14 +143,14 @@ class ConnectionHandler(threading.Thread):
                 if len(PASS) != 0 and passwd == PASS:
                     self.method_CONNECT(hostPort)
                 elif len(PASS) != 0 and passwd != PASS:
-                    self.client.send(bytes("HTTP/1.1 400 WrongPass!\r\n\r\n", "utf-8"))
+                    self.client.send(b"HTTP/1.1 400 WrongPass!\r\n\r\n")
                 if hostPort.startswith(IP):
                     self.method_CONNECT(hostPort)
                 else:
-                   self.client.send(bytes("HTTP/1.1 403 Forbidden!\r\n\r\n", "utf-8"))
+                   self.client.send(b"HTTP/1.1 403 Forbidden!\r\n\r\n")
             else:
                 self.log_time("- No X-Real-Host!")
-                self.client.send(bytes("HTTP/1.1 400 NoXRealHost!\r\n\r\n", "utf-8"))
+                self.client.send(b"HTTP/1.1 400 NoXRealHost!\r\n\r\n")
         except Exception as e:
             print("Error: ", str(e))
         finally:
@@ -160,7 +170,7 @@ class ConnectionHandler(threading.Thread):
         if aux == -1:
             return ""
 
-        return head[:aux];
+        return head[:aux]
 
     def connect_target(self, host):
         i = host.find(':')
@@ -182,7 +192,7 @@ class ConnectionHandler(threading.Thread):
 
     def method_CONNECT(self, path):
         self.connect_target(path)
-        self.client.sendall(bytes(RESPONSE, "utf-8"))
+        self.client.sendall(RESPONSE)
         self.client_buffer = ""
         self.time_start = time.time()
         self.doCONNECT()
@@ -217,7 +227,7 @@ class ConnectionHandler(threading.Thread):
                             break
                     except:
                         break
-            if int(time.time() - self.time_start) == 50:
+            if int(time.time() - self.time_start) == TIMER:
             	self.close()
             	self.log_time("Client disconnected (timer)")
             	break
@@ -228,8 +238,8 @@ class ConnectionHandler(threading.Thread):
 def main(host=IP, port=PORT):
     print("\033[0;34m━"*8,"\033[1;32mPROXY SOCKS","\033[0;34m━"*8,"\n")
     print("\033[1;33mIP:\033[1;32m " + IP)
-    print("\033[1;33mPORT:\033[1;32m " + str(PORT))
-    print("\033[1;33mTIMER:\033[1;32m " + str(TIMER), "sec\n")
+    print("\033[1;33mPORT:\033[1;32m", PORT)
+    print("\033[1;33mTIMER:\033[1;32m", TIMER, "sec\n")
     print("\033[0;34m━"*11,"\033[1;32mX-DCB","\033[0;34m━\033[1;37m"*11,"\n")
     server = Server(IP, PORT)
     server.start()
