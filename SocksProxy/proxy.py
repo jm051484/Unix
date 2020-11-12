@@ -107,7 +107,12 @@ class ConnectionHandler(threading.Thread):
             pass
         finally:
             self.targetClosed = True
-
+    
+    def logfile(self, msg):
+    	f = open("log.txt", "a")
+    	f.write(msg+"\n")
+    	f.close()
+    
     def log_time(self, msg):
     	#print(time.strftime("[%H:%M:%S]"), msg)
     	pass
@@ -144,15 +149,16 @@ class ConnectionHandler(threading.Thread):
                     self.method_CONNECT(hostPort)
                 elif len(PASS) != 0 and passwd != PASS:
                     self.client.send(b"HTTP/1.1 400 WrongPass!\r\n\r\n")
-                if hostPort.startswith(IP):
-                    self.method_CONNECT(hostPort)
-                else:
-                   self.client.send(b"HTTP/1.1 403 Forbidden!\r\n\r\n")
+                
+                #if hostPort.startswith(IP):
+                self.method_CONNECT(hostPort)
+                #else:
+                   #self.client.send(b"HTTP/1.1 403 Forbidden!\r\n\r\n")
             else:
                 self.log_time("- No X-Real-Host!")
                 self.client.send(b"HTTP/1.1 400 NoXRealHost!\r\n\r\n")
-        except Exception as e:
-            print("Error: ", str(e))
+        #except Exception as e:
+            #print("Error: ", str(e))
         finally:
             self.close()
             self.server.removeConn(self)
@@ -235,12 +241,12 @@ class ConnectionHandler(threading.Thread):
 
 
 
-def main(host=IP, port=PORT):
-    print("\033[0;34m━"*8,"\033[1;32mPROXY SOCKS","\033[0;34m━"*8,"\n")
-    print("\033[1;33mIP:\033[1;32m " + IP)
+def main():
+    print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n")
+    print("\033[1;33mIP:\033[1;32m",IP)
     print("\033[1;33mPORT:\033[1;32m", PORT)
-    print("\033[1;33mTIMER:\033[1;32m", TIMER, "sec\n")
-    print("\033[0;34m━"*11,"\033[1;32mX-DCB","\033[0;34m━\033[1;37m"*11,"\n")
+    print("\033[1;33mTIMER:\033[1;32m ", TIMER, "sec\n")
+    print("\033[0;34m="*11,"\033[1;32mX-DCB","\033[0;34m=\033[1;37m"*11,"\n")
     server = Server(IP, PORT)
     server.start()
     while True:
@@ -250,5 +256,6 @@ def main(host=IP, port=PORT):
             server.close()
             print("\nCancelled...")
             break
+
 if __name__ == "__main__":
     main()
