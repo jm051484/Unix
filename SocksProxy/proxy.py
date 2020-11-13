@@ -31,7 +31,7 @@ class Server(threading.Thread):
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
         self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.soc.settimeout(1)
+        self.soc.settimeout(2)
         self.soc.bind((self.host, self.port))
         self.soc.listen(0)
         self.running = True
@@ -129,7 +129,7 @@ class ConnectionHandler(threading.Thread):
             	f=strbuff.find('CONNECT')
             	cc=strbuff[f:strbuff.find('\r\n',f)]
             	x=cc.find(' ')
-            	hostPort=cc[x:cc.find(' ',x+1)]
+            	hostPort=cc[x:cc.find(' ',x+1)].strip()
             	print("found:", hostPort)
 
             if hostPort == "":
@@ -150,15 +150,13 @@ class ConnectionHandler(threading.Thread):
                 elif len(PASS) != 0 and passwd != PASS:
                     self.client.send(b"HTTP/1.1 400 WrongPass!\r\n\r\n")
                 
-                #if hostPort.startswith(IP):
                 self.method_CONNECT(hostPort)
-                #else:
-                   #self.client.send(b"HTTP/1.1 403 Forbidden!\r\n\r\n")
             else:
                 self.log_time("- No X-Real-Host!")
                 self.client.send(b"HTTP/1.1 400 NoXRealHost!\r\n\r\n")
-        #except Exception as e:
+        except Exception as e:
             #print("Error: ", str(e))
+            pass
         finally:
             self.close()
             self.server.removeConn(self)
@@ -208,6 +206,11 @@ class ConnectionHandler(threading.Thread):
         error = False
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
+            if int(time.time() - self.time_start) > TIMER:
+            	self.close()
+            	self.server.removeConn(self)
+            	self.log_time("Client disconnected (timer)")
+            	break
             if err:
                 continue
             if recv:
@@ -229,14 +232,8 @@ class ConnectionHandler(threading.Thread):
                                 while data:
                                     byte = self.target.send(data)
                                     data = data[byte:]
-                        else:
-                            break
                     except:
-                        break
-            if int(time.time() - self.time_start) == TIMER:
-            	self.close()
-            	self.log_time("Client disconnected (timer)")
-            	break
+                        pass
             
 
 
