@@ -6,6 +6,7 @@ os.system("clear")
 BUFLEN = 8196 * 8
 RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
 
+servers=list()
 class Server(threading.Thread):
     def __init__(self, sport, dport, timer):
         threading.Thread.__init__(self)
@@ -112,24 +113,17 @@ class ConnectionHandler(threading.Thread):
             self.client_buffer = self.client.recv(BUFLEN)
             
             strbuff = str(self.client_buffer)
-            hostPort=""
             
+            hostPort = self.server.defhost
             if "CONNECT" in strbuff:
             	f=strbuff.find('CONNECT')
             	cc=strbuff[f:strbuff.find('\r\n',f)]
             	x=cc.find(' ')
             	hostPort=cc[x:cc.find(' ',x+1)].strip()
 
-            if hostPort == "":
-                hostPort = self.server.defhost
-
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
 
-            if hostPort != "":
-                self.method_CONNECT(hostPort)
-            else:
-                self.log_time("- No X-Real-Host!")
-                self.client.send(b"HTTP/1.1 400 NoXRealHost!\r\n\r\n")
+            self.method_CONNECT(hostPort)
         except Exception as e:
             #print("Error: ", str(e))
             pass
@@ -226,6 +220,7 @@ def main():
     		if 'sport' in c and 'timer' in c and 'dport' in c:
     			server = Server(c['sport'], c['dport'], c['timer'])
     			server.start()
+    			servers.append(server)
     		else:
     			raise Exception('Missing values.')
     	print('PID:', pidx)
@@ -237,6 +232,8 @@ def main():
     	       try:
     	       	time.sleep(2)
     	       except KeyboardInterrupt:
+    	       	for svr in servers:
+    	       		svr.close()
     	       	print("\nCancelled...")
     	       	exit()
 
