@@ -6,6 +6,9 @@ cat << info
 |    by Dexter Cellona Banawon     |
  ==================================
      - Client Auto-Disconnect
+     - Multiport
+     - Stabilized timer
+     - Config based (server.conf)
      - Beta Version
 
 info
