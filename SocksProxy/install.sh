@@ -25,7 +25,7 @@ wget -qO $loc/proxy.py https://git.io/JT9pd
 wget -qO $loc/server.conf https://git.io/JkCPV
 
 echo "Adding service: socksproxy"
-cat << service > /etc/systemd/system/socksproxy.service
+cat << service > /etc/systemd/system/socksproxy1.service
 [Unit]
 Description=Socks Proxy for SocksHttp
 Wants=network.target
@@ -33,7 +33,7 @@ After=network.target
 [Service]
 Type=simple
 ExecStart=/usr/bin/python3 $loc/proxy.py
-ExecStop=/usr/bin/kill -15 `cat $loc/.pid`
+ExecStop=/usr/bin/kill -15 \`cat $loc/.pid\`
 [Install]
 WantedBy=network.target
 service
