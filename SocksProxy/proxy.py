@@ -77,7 +77,6 @@ class ConnectionHandler(threading.Thread):
         self.client = socClient
         self.client_buffer = ""
         self.server = server
-        print(server.timer)
         self.cl_addr = addr
 
     def close(self):
@@ -113,6 +112,7 @@ class ConnectionHandler(threading.Thread):
             self.client_buffer = self.client.recv(BUFLEN)
             
             strbuff = str(self.client_buffer)
+            hostPort=""
             
             if "CONNECT" in strbuff:
             	f=strbuff.find('CONNECT')
