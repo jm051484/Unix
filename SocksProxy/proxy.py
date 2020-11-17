@@ -113,34 +113,19 @@ class ConnectionHandler(threading.Thread):
             self.client_buffer = self.client.recv(BUFLEN)
             
             strbuff = str(self.client_buffer)
-
-            hostPort = self.findHeader(self.client_buffer, "X-Real-Host")
             
             if "CONNECT" in strbuff:
             	f=strbuff.find('CONNECT')
             	cc=strbuff[f:strbuff.find('\r\n',f)]
             	x=cc.find(' ')
             	hostPort=cc[x:cc.find(' ',x+1)].strip()
-            	print("found:", hostPort)
 
             if hostPort == "":
                 hostPort = self.server.defhost
 
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
 
-            split = self.findHeader(self.client_buffer, "X-Split")
-
-            if split != "":
-                self.client.recv(BUFLEN)
-
             if hostPort != "":
-                passwd = self.findHeader(self.client_buffer, "X-Pass")
-                
-                if len(PASS) != 0 and passwd == PASS:
-                    self.method_CONNECT(hostPort)
-                elif len(PASS) != 0 and passwd != PASS:
-                    self.client.send(b"HTTP/1.1 400 WrongPass!\r\n\r\n")
-                
                 self.method_CONNECT(hostPort)
             else:
                 self.log_time("- No X-Real-Host!")
