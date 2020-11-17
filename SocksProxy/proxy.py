@@ -1,32 +1,22 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 # SOCKs Proxy by X-DCB
-import socket, threading, _thread, select, signal, sys, time
-from os import system
-system("clear")
-IP = "0.0.0.0"
-try:
-   PORT = int(sys.argv[1])
-except:
-   PORT = 80
-try:
-	TIMER = int(sys.argv[2])
-except:
-	TIMER = 50
-PASS = ""
+import socket, threading, _thread, select, signal, sys, time, configparser, os
+os.system("clear")
 BUFLEN = 8196 * 8
-TIMEOUT = 60
-DEFAULT_HOST = "0.0.0.0:22"
 RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
 
 class Server(threading.Thread):
-    def __init__(self, host, port):
+    def __init__(self, sport, dport, timer):
         threading.Thread.__init__(self)
         self.running = False
-        self.host = host
-        self.port = port
+        self.host = "0.0.0.0"
+        self.port = int(sport)
+        self.defhost = '0.0.0.0:'+dport
+        self.timer = int(timer)
         self.threads = []
         self.threadsLock = threading.Lock()
+        print("Listening on port %s for port %s%s." % (sport, dport," with %ss timer" % timer if int(timer) > 30 else ''))
 
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
@@ -133,7 +123,7 @@ class ConnectionHandler(threading.Thread):
             	print("found:", hostPort)
 
             if hostPort == "":
-                hostPort = DEFAULT_HOST
+                hostPort = self.server.defhost
 
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
 
@@ -206,7 +196,7 @@ class ConnectionHandler(threading.Thread):
         error = False
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
-            if int(time.time() - self.time_start) > TIMER:
+            if int(time.time() - self.time_start) > self.server.timer and self.server.timer > 30:
             	self.close()
             	self.server.removeConn(self)
             	self.log_time("Client disconnected (timer)")
@@ -234,25 +224,34 @@ class ConnectionHandler(threading.Thread):
                                     data = data[byte:]
                     except:
                         pass
-            
-
-
 
 def main():
-    print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n")
-    print("\033[1;33mIP:\033[1;32m",IP)
-    print("\033[1;33mPORT:\033[1;32m", PORT)
-    print("\033[1;33mTIMER:\033[1;32m ", TIMER, "sec\n")
-    print("\033[0;34m="*11,"\033[1;32mX-DCB","\033[0;34m=\033[1;37m"*11,"\n")
-    server = Server(IP, PORT)
-    server.start()
-    while True:
-        try:
-            time.sleep(2)
-        except KeyboardInterrupt:
-            server.close()
-            print("\nCancelled...")
-            break
+    pidx=str(os.getpid())
+    pid=open('.pid', 'w')
+    pid.write(pidx)
+    pid.close()
+    print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n\033[1;33m\033[1;32m")
+    config = configparser.ConfigParser()
+    try:
+    	config.read('server.conf')
+    	for s in config.sections():
+    		c = config[s]
+    		if 'sport' in c and 'timer' in c and 'dport' in c:
+    			server = Server(c['sport'], c['dport'], c['timer'])
+    			server.start()
+    		else:
+    			raise Exception('Missing values.')
+    	print('PID:', pidx)
+    except Exception as e:
+    	print("Configuration error. Err:", str(e))
+    finally:
+    	print('\n'+"\033[0;34m="*11,"\033[1;32mX-DCB","\033[0;34m=\033[1;37m"*11,"\n")
+    	while True:
+    	       try:
+    	       	time.sleep(2)
+    	       except KeyboardInterrupt:
+    	       	print("\nCancelled...")
+    	       	exit()
 
 if __name__ == "__main__":
     main()
