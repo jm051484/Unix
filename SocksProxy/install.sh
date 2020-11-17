@@ -33,8 +33,8 @@ Wants=network.target
 After=network.target
 [Service]
 Type=simple
-ExecStart=/usr/bin/python3 /etc/socksproxy/proxy.py
-ExecStop=/usr/bin/kill -15 `cat /etc/socksproxy/.pid`
+ExecStart=/usr/bin/python3 $loc/proxy.py
+ExecStop=/usr/bin/kill -15 `cat $loc/.pid`
 [Install]
 WantedBy=network.target
 service
