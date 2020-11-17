@@ -227,14 +227,15 @@ class ConnectionHandler(threading.Thread):
                         pass
 
 def main():
+    ploc=os.path.dirname(os.path.realpath(__file__))
     pidx=str(os.getpid())
-    pid=open(os.path.dirname(os.path.realpath(__file__))+'/.pid', 'w')
+    pid=open(ploc+'/.pid', 'w')
     pid.write(pidx)
     pid.close()
     print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n\033[1;33m\033[1;32m")
     config = configparser.ConfigParser()
     try:
-    	config.read('server.conf')
+    	config.read(ploc+'/server.conf')
     	for s in config.sections():
     		c = config[s]
     		if 'sport' in c and 'timer' in c and 'dport' in c:
