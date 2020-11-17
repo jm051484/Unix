@@ -13,10 +13,6 @@ cat << info
 
 info
 
-echo -e "Required info :)"
-read -p "Select Port: " -ei 80 PORT
-read -p "Timer (sec): " -ei 50 TIMER
-echo -e "\nThanks for the info :)."
 read -p "Please Enter to continue..."
 
 clear
