@@ -77,6 +77,7 @@ class ConnectionHandler(threading.Thread):
         self.client = socClient
         self.client_buffer = ""
         self.server = server
+        print(server.timer)
         self.cl_addr = addr
 
     def close(self):
@@ -227,7 +228,7 @@ class ConnectionHandler(threading.Thread):
 
 def main():
     pidx=str(os.getpid())
-    pid=open('.pid', 'w')
+    pid=open(os.path.dirname(os.path.realpath(__file__))+'/.pid', 'w')
     pid.write(pidx)
     pid.close()
     print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n\033[1;33m\033[1;32m")
