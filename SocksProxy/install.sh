@@ -63,11 +63,13 @@ menu
 
 cat << 'accadd' > $bin/accadd
 #!/bin/bash
+cat << msg
  ================================
 |         Create Account         |
  ================================
 | Note: Leave duration empty
 |       for non-expiring account
+msg
 read -p "    Username : " -e USER
 read -p "    Password : " -e PASS
 read -p "    Days     : " -e DAYS
