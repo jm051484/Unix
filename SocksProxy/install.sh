@@ -28,6 +28,7 @@ wget -qO $loc/server.conf https://git.io/JkCPV
 
 echo "Configuring SSH."
 cd /etc/ssh
+needpass=`grep '^TrustedUserCAKeys' sshd_config`
 [ -f "sshd_config-old" ] || mv sshd_config sshd_config-old
 cat << ssh > sshd_config
 Port 22
@@ -156,9 +157,17 @@ setx core netdev_budget 600
 setx core default_qdisc fq
 setx ipv6 conf.all.accept_ra 2
 
+if [[ $needpass ]];then
+	echo "You need to change the password."
+	read -p "Password: " -e PASS
+	echo -e "$PASS\n$PASS\n" | passwd root
+fi
+
 clear
 cat << info | tee -a ~/socksproxylog.txt
 
+| New Password for 'root':
+|    $PASS
   ====================================
 | Installation finished.              |
 | Service Name: socksproxy            |
