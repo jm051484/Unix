@@ -77,11 +77,12 @@ exp=`date -d "+$DAYS days" +%F`
 [ $DAYS ] && ex="-e $exp"
 useradd $ex -NM -s /bin/false $USER 2> /dev/null
 echo -e "$PASS\n$PASS\n" | passwd $USER 2> /dev/null
+clear
 cat << info
 ~ Account Info ~
 Username : $USER
 Password : $PASS
-Expiration Date : $exp
+Expiration Date : `[ $DAYS ] && echo $DAYS || echo "None"`
 
 ~ Server Ports ~
 OHP :
@@ -105,9 +106,9 @@ acclist
 
 cat << 'accdel' > $bin/accdel
 #!/bin/bash
-== ! Delete Account ! ==
+echo "== ! Delete Account ! =="
 read -p "Username : " -e USER
-userdel -f -r $USER
+userdel -f -r $USER 2> /dev/null
 echo "$USER deleted"
 exit 0
 accdel
