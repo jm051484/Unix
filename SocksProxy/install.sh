@@ -28,7 +28,7 @@ wget -qO $loc/server.conf https://git.io/JkCPV
 
 echo "Configuring SSH."
 cd /etc/ssh
-mv sshd_config sshd_config-old
+[ -f "sshd_config-old" ] || mv sshd_config sshd_config-old
 cat << ssh > sshd_config
 Port 22
 PermitRootLogin yes
