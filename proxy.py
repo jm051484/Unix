@@ -1,37 +1,31 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 # SOCKs Proxy by X-DCB
-import socket, threading, _thread, select, signal, sys, time
-from os import system
-system("clear")
-IP = "0.0.0.0"
-try:
-   PORT = int(sys.argv[1])
-except:
-   PORT = 80
-try:
-	TIMER = int(sys.argv[2])
-except:
-	TIMER = 50
-PASS = ""
+import socket, threading, _thread, select, signal, sys, time, configparser, os
+import urllib.request as req
+os.system("clear")
 BUFLEN = 8196 * 8
-TIMEOUT = 60
-DEFAULT_HOST = "0.0.0.0:22"
 RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
 
+servers=list()
 class Server(threading.Thread):
-    def __init__(self, host, port):
+    def __init__(self, sport, dport, timer):
         threading.Thread.__init__(self)
         self.running = False
-        self.host = host
-        self.port = port
+        self.host = "0.0.0.0"
+        self.port = int(sport)
+        self.dport=int(dport)
+        self.defhost = '0.0.0.0:'+dport
+        self.timer = int(timer)
         self.threads = []
         self.threadsLock = threading.Lock()
+        print("Listening on port %s for port %s%s." % (sport, dport," with %ss timer" % timer if int(timer) > 30 else ''))
 
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
         self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.soc.settimeout(1)
+        self.soc.settimeout(2)
         self.soc.bind((self.host, self.port))
         self.soc.listen(0)
         self.running = True
@@ -121,73 +115,48 @@ class ConnectionHandler(threading.Thread):
         try:
             self.client_buffer = self.client.recv(BUFLEN)
             
-            strbuff = str(self.client_buffer)
-
-            hostPort = self.findHeader(self.client_buffer, "X-Real-Host")
+            strbuff = self.client_buffer.decode("utf-8")
+            uhost = self.findHeader('Host', strbuff)
             
+            hostPort = self.server.defhost
             if "CONNECT" in strbuff:
-            	f=strbuff.find('CONNECT')
-            	cc=strbuff[f:strbuff.find('\r\n',f)]
-            	x=cc.find(' ')
-            	hostPort=cc[x:cc.find(' ',x+1)]
-            	print("found:", hostPort)
-
-            if hostPort == "":
-                hostPort = DEFAULT_HOST
+            	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
+            	x=cc.find(' ')+1
+            	hp=cc[x:cc.find(' ',x+1)]
+            	sport=str(self.server.port)
+            	dport=str(self.server.dport)
+            	if '@' in hp:
+            		a=cc.split('@')
+            		hp=[x for x in a if (sport in x and dport in x)][0]
+            	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
+            	if not(sport in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
+            		hostPort=hp
 
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
+            
+            if uhost == "":
+            	self.log_time(self.client.recv(BUFLEN))
 
-            split = self.findHeader(self.client_buffer, "X-Split")
-
-            if split != "":
-                self.client.recv(BUFLEN)
-
-            if hostPort != "":
-                passwd = self.findHeader(self.client_buffer, "X-Pass")
-                
-                if len(PASS) != 0 and passwd == PASS:
-                    self.method_CONNECT(hostPort)
-                elif len(PASS) != 0 and passwd != PASS:
-                    self.client.send(b"HTTP/1.1 400 WrongPass!\r\n\r\n")
-                
-                #if hostPort.startswith(IP):
-                self.method_CONNECT(hostPort)
-                #else:
-                   #self.client.send(b"HTTP/1.1 403 Forbidden!\r\n\r\n")
-            else:
-                self.log_time("- No X-Real-Host!")
-                self.client.send(b"HTTP/1.1 400 NoXRealHost!\r\n\r\n")
-        #except Exception as e:
-            #print("Error: ", str(e))
+            self.method_CONNECT(hostPort)
+        except Exception as e:
+            pass
         finally:
             self.close()
             self.server.removeConn(self)
 
     def findHeader(self, head, header):
-        aux = str(head).find(header + ": ")
-
-        if aux == -1:
-            return ""
-
-        aux = head.find(":", aux)
-        head = head[aux+2:]
-        aux = head.find("\r\n")
-
-        if aux == -1:
-            return ""
-
-        return head[:aux]
+    	hdr={}
+    	for line in header.splitlines():
+    		ls=line.split(': ')
+    		if len(ls) == 2:
+    			hdr[ls[0]]=ls[1]
+    	return hdr[head] if head in hdr else ""
 
     def connect_target(self, host):
         i = host.find(':')
         if i != -1:
             port = int(host[i+1:])
             host = host[:i]
-        else:
-            if self.method=="CONNECT":
-                port = 443
-            else:
-                port = 22
 
         (soc_family, soc_type, proto, _, address) = socket.getaddrinfo(host, port)[0]
 
@@ -208,6 +177,11 @@ class ConnectionHandler(threading.Thread):
         error = False
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
+            if int(time.time() - self.time_start) > self.server.timer and self.server.timer > 30:
+            	self.close()
+            	self.server.removeConn(self)
+            	self.log_time("Client disconnected (timer)")
+            	break
             if err:
                 continue
             if recv:
@@ -229,33 +203,40 @@ class ConnectionHandler(threading.Thread):
                                 while data:
                                     byte = self.target.send(data)
                                     data = data[byte:]
-                        else:
-                            break
                     except:
-                        break
-            if int(time.time() - self.time_start) == TIMER:
-            	self.close()
-            	self.log_time("Client disconnected (timer)")
-            	break
-            
-
-
+                        pass
 
 def main():
-    print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n")
-    print("\033[1;33mIP:\033[1;32m",IP)
-    print("\033[1;33mPORT:\033[1;32m", PORT)
-    print("\033[1;33mTIMER:\033[1;32m ", TIMER, "sec\n")
-    print("\033[0;34m="*11,"\033[1;32mX-DCB","\033[0;34m=\033[1;37m"*11,"\n")
-    server = Server(IP, PORT)
-    server.start()
-    while True:
-        try:
-            time.sleep(2)
-        except KeyboardInterrupt:
-            server.close()
-            print("\nCancelled...")
-            break
+    ploc=os.path.dirname(os.path.realpath(__file__))
+    pidx=str(os.getpid())
+    pid=open(ploc+'/.pid', 'w')
+    pid.write(pidx)
+    pid.close()
+    print("\033[0;34m="*8,"\033[1;32mPROXY SOCKS","\033[0;34m="*8,"\n\033[1;33m\033[1;32m")
+    config = configparser.ConfigParser()
+    try:
+    	config.read(ploc+'/server.conf')
+    	for s in config.sections():
+    		c = config[s]
+    		if 'sport' in c and 'timer' in c and 'dport' in c:
+    			server = Server(c['sport'], c['dport'], c['timer'])
+    			server.start()
+    			servers.append(server)
+    		else:
+    			raise Exception('Missing values.')
+    	print('PID:', pidx)
+    except Exception as e:
+    	print("Configuration error. Err:", str(e))
+    finally:
+    	print('\n'+"\033[0;34m="*11,"\033[1;32mX-DCB","\033[0;34m=\033[1;37m"*11,"\n")
+    	while True:
+    	       try:
+    	       	time.sleep(2)
+    	       except KeyboardInterrupt:
+    	       	for svr in servers:
+    	       		svr.close()
+    	       	print("\nCancelled...")
+    	       	exit()
 
 if __name__ == "__main__":
     main()
