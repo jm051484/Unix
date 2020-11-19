@@ -15,6 +15,7 @@ class Server(threading.Thread):
         self.running = False
         self.host = "0.0.0.0"
         self.port = int(sport)
+        self.dport=int(dport)
         self.defhost = '0.0.0.0:'+dport
         self.timer = int(timer)
         self.threads = []
@@ -122,11 +123,13 @@ class ConnectionHandler(threading.Thread):
             	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
             	x=cc.find(' ')+1
             	hp=cc[x:cc.find(' ',x+1)]
-            	hport=str(self.server.port)
+            	sport=str(self.server.port)
+            	dport=str(self.server.dport)
             	if '@' in hp:
-            		hp=[x for x in a if hport in x][0]
+            		a=cc.split('@')
+            		hp=[x for x in a if (sport in x and dport in x)][0]
             	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
-            	if not(hport in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
+            	if not(sport in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
             		hostPort=hp
 
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
