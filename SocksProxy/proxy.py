@@ -6,6 +6,7 @@ import urllib.request as req
 os.system("clear")
 BUFLEN = 8196 * 8
 RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
 
 servers=list()
 class Server(threading.Thread):
@@ -113,22 +114,22 @@ class ConnectionHandler(threading.Thread):
         try:
             self.client_buffer = self.client.recv(BUFLEN)
             
-            strbuff = str(self.client_buffer)
-            uhost = self.findHeader('Host', self.client_buffer)
-            
-            me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
+            strbuff = self.client_buffer.decode("utf-8")
+            uhost = self.findHeader('Host', strbuff)
             
             hostPort = self.server.defhost
             if "CONNECT" in strbuff:
-            	f=strbuff.find('CONNECT')
-            	cc=strbuff[f:strbuff.find('\r\n',f)]
+            	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
             	x=cc.find(' ')+1
             	hp=cc[x:cc.find(' ',x+1)]
+            	hport=str(self.server.port)
+            	if '@' in hp:
+            		hp=[x for x in a if hport in x][0]
             	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
-            	if not(str(self.server.port) in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
+            	if not(hport in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
             		hostPort=hp
 
-            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, selfq.client_buffer))
+            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
             
             if uhost == "":
             	self.log_time(self.client.recv(BUFLEN))
@@ -142,7 +143,7 @@ class ConnectionHandler(threading.Thread):
 
     def findHeader(self, head, header):
     	hdr={}
-    	for line in header.decode("utf-8").splitlines():
+    	for line in header.splitlines():
     		ls=line.split(': ')
     		if len(ls) == 2:
     			hdr[ls[0]]=ls[1]
@@ -153,11 +154,6 @@ class ConnectionHandler(threading.Thread):
         if i != -1:
             port = int(host[i+1:])
             host = host[:i]
-        else:
-            if self.method=="CONNECT":
-                port = 443
-            else:
-                port = 22
 
         (soc_family, soc_type, proto, _, address) = socket.getaddrinfo(host, port)[0]
 
