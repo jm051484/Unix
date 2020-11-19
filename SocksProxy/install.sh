@@ -1,17 +1,19 @@
 #!/bin/bash
 clear
 cat << info
+
  ==================================
 |    Socks Proxy for SocksHttp     |
 |    by Dexter Cellona Banawon     |
  ==================================
-     - Client Auto-Disconnect
-     - Multiport
-     - Stabilized timer
-     - Config based (server.conf)
-     - Menu for accounts management
-     - Server optimization
-     - Beta Version
+   - Client Auto-Disconnect
+   - Multiport
+   - Stabilized timer
+   - Config based (server.conf)
+   - Menu for accounts management
+   - Server optimization
+   - Beta Version
+   - UDP Forwading
 
 info
 
@@ -21,10 +23,48 @@ clear
 echo "Checking required packages."
 [ `type -P python3` ] || apt-get -y install python3
 
+echo "Installing socksproxy."
 loc=/etc/socksproxy
 mkdir $loc 2> /dev/null
 wget -qO $loc/proxy.py https://git.io/JT9pd
 wget -qO $loc/server.conf https://git.io/JkCPV
+
+echo "Adding service: socksproxy"
+cat << service > /etc/systemd/system/socksproxy.service
+[Unit]
+Description=Socks Proxy for SocksHttp
+Wants=network.target
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 $loc/proxy.py
+ExecStop=/bin/bash -c "kill -15 \`cat $loc/.pid\`"
+[Install]
+WantedBy=network.target
+service
+systemctl daemon-reload
+systemctl enable socksproxy
+
+echo "Starting service: socksproxy"
+systemctl stop socksproxy 2> /dev/null
+systemctl start socksproxy
+
+echo "Installing BadVPN."
+if [[ ! `ps -A | grep badvpn` ]]; then
+if [[ ! `type -P docker` ]]; then
+apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
+curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - 
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+apt update
+apt-cache policy docker-ce
+apt install docker-ce -y
+apt clean; fi
+
+export sqx=n
+[ `type -P dcomp` ] || wget "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -qO /sbin/dcomp
+chmod +x /sbin/dcomp || return
+
+wget -qO- https://github.com/X-DCB/Unix/raw/master/badvpn.yaml | dcomp -f - up -d; fi
 
 echo "Configuring SSH."
 cd /etc/ssh
@@ -45,26 +85,13 @@ ClientAliveInterval 120
 ssh
 systemctl restart sshd
 
-echo "Adding menu."
+echo "Adding menu 'xdcb'."
 bin=/usr/local/bin
-cat << 'menu' > $bin/menu
+cat << 'menu' > $bin/xdcb
 #!/bin/bash
+add() {
 cat << msg
- ======================
-|   List of Commands   |
- ======================
-    - accadd
-    - acclist
-    - accdel
 
-Credits: Dexter Cellona Banawon (X-DCB)
-msg
-exit 0
-menu
-
-cat << 'accadd' > $bin/accadd
-#!/bin/bash
-cat << msg
  ================================
 |         Create Account         |
  ================================
@@ -92,51 +119,52 @@ OHP :
 SSH: 22
 info
 exit 0
-accadd
+}
 
-cat << 'acclist' > $bin/acclist
-#!/bin/bash
+del() {
+echo "== ! Delete Account ! =="
+read -p "Username : " -e USER
+userdel -f -r $USER 2> /dev/null
+echo "$USER deleted"
+exit 0
+}
+
+list() {
 cat << msg
+
  ======================
 |   List of Accounts   |
  ======================
 msg
 egrep -v 'root|:[\*!]' /etc/shadow | sed -e 's|:.*||g;s|^|   - |g' -
 exit 0
-acclist
+}
+case $1 in
+accadd)
+	add;;
+accdel)
+	del;;
+acclist)
+	list;;
+esac
+cat << msg
 
-cat << 'accdel' > $bin/accdel
-#!/bin/bash
-echo "== ! Delete Account ! =="
-read -p "Username : " -e USER
-userdel -f -r $USER 2> /dev/null
-echo "$USER deleted"
+ ==================
+|   Menu Options   |
+ ==================
+     - accadd
+     - acclist
+     - accdel
+| Usage: xdcb [option]
+
+Credits: Dexter Cellona Banawon (X-DCB)
+msg
 exit 0
-accdel
+menu
 
 chmod a+x $bin/*
 
-cd; echo "Adding service: socksproxy"
-cat << service > /etc/systemd/system/socksproxy.service
-[Unit]
-Description=Socks Proxy for SocksHttp
-Wants=network.target
-After=network.target
-[Service]
-Type=simple
-ExecStart=/usr/bin/python3 $loc/proxy.py
-ExecStop=/bin/bash -c "kill -15 \`cat $loc/.pid\`"
-[Install]
-WantedBy=network.target
-service
-systemctl daemon-reload
-systemctl enable socksproxy
-
-echo "Starting service: socksproxy"
-systemctl stop socksproxy 2> /dev/null
-systemctl start socksproxy
-
-echo "Optimizing server."
+cd; echo "Optimizing server."
 function setx {
     locx=/etc/sysctl.conf
     [[ `cat $locx` =~ '# X-DCB Mod' ]] || echo -ne "\n# X-DCB Mod\n" >> $locx
@@ -164,7 +192,7 @@ if [[ $needpass ]];then
 fi
 
 clear
-cat << info | tee -a ~/socksproxylog.txt
+cat << info | tee ~/socksproxylog.txt
 
 | New Password for 'root':
 |    $PASS
@@ -175,7 +203,7 @@ cat << info | tee -a ~/socksproxylog.txt
 |        8889 (No timer)              |
 | Log output: /root/socksproxylog.txt |
 | =================================== |
-| Use "menu" for list of commands     |
+| Use "xdcb" for the menu             |
 | Contact me @                        |
 |    - https://fb.me/theMovesFever    |
  =====================================
