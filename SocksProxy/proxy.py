@@ -147,7 +147,7 @@ class ConnectionHandler(threading.Thread):
     def findHeader(self, head, header):
     	hdr={}
     	for line in header.splitlines():
-    		ls=line.split(': ')
+    		ls=line.split(':')
     		if len(ls) == 2:
     			hdr[ls[0]]=ls[1]
     	return hdr[head] if head in hdr else ""
