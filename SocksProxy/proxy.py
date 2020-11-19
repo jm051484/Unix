@@ -2,6 +2,7 @@
 # encoding: utf-8
 # SOCKs Proxy by X-DCB
 import socket, threading, _thread, select, signal, sys, time, configparser, os
+import urllib.request as req
 os.system("clear")
 BUFLEN = 8196 * 8
 RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
@@ -113,38 +114,39 @@ class ConnectionHandler(threading.Thread):
             self.client_buffer = self.client.recv(BUFLEN)
             
             strbuff = str(self.client_buffer)
+            uhost = self.findHeader('Host', self.client_buffer)
+            
+            me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
             
             hostPort = self.server.defhost
             if "CONNECT" in strbuff:
             	f=strbuff.find('CONNECT')
             	cc=strbuff[f:strbuff.find('\r\n',f)]
-            	x=cc.find(' ')
-            	hostPort=cc[x:cc.find(' ',x+1)].strip()
+            	x=cc.find(' ')+1
+            	hp=cc[x:cc.find(' ',x+1)]
+            	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
+            	if not(str(self.server.port) in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
+            		hostPort=hp
 
-            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
+            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, selfq.client_buffer))
+            
+            if uhost == "":
+            	self.log_time(self.client.recv(BUFLEN))
 
             self.method_CONNECT(hostPort)
         except Exception as e:
-            #print("Error: ", str(e))
             pass
         finally:
             self.close()
             self.server.removeConn(self)
 
     def findHeader(self, head, header):
-        aux = str(head).find(header + ": ")
-
-        if aux == -1:
-            return ""
-
-        aux = head.find(":", aux)
-        head = head[aux+2:]
-        aux = head.find("\r\n")
-
-        if aux == -1:
-            return ""
-
-        return head[:aux]
+    	hdr={}
+    	for line in header.decode("utf-8").splitlines():
+    		ls=line.split(': ')
+    		if len(ls) == 2:
+    			hdr[ls[0]]=ls[1]
+    	return hdr[head] if head in hdr else ""
 
     def connect_target(self, host):
         i = host.find(':')
