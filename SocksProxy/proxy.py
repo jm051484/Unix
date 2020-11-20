@@ -138,7 +138,7 @@ class ConnectionHandler(threading.Thread):
             	self.log_time(self.client.recv(BUFLEN))
 
             self.method_CONNECT(hostPort)
-        except Exception as e:
+        except:
             pass
         finally:
             self.close()
@@ -175,6 +175,7 @@ class ConnectionHandler(threading.Thread):
     def doCONNECT(self):
         socs = [self.client, self.target]
         error = False
+        count=0
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
             if int(time.time() - self.time_start) > self.server.timer and self.server.timer > 30:
@@ -183,12 +184,14 @@ class ConnectionHandler(threading.Thread):
             	self.log_time("Client disconnected (timer)")
             	break
             if err:
+                count+=1
                 continue
             if recv:
                 for in_ in recv:
                     try:
                         data = in_.recv(BUFLEN)
                         if data:
+                            count=0
                             if in_ is self.target:
                                 try:
                                     self.client.connect(self.cl_addr)
@@ -203,8 +206,16 @@ class ConnectionHandler(threading.Thread):
                                 while data:
                                     byte = self.target.send(data)
                                     data = data[byte:]
+                        else:
+                        	time.sleep(1)
+                        	count+=1
+                        	break
                     except:
                         pass
+                if count >= 50:
+                	self.close()
+                	self.server.removeConn(self)
+                	break
 
 def main():
     ploc=os.path.dirname(os.path.realpath(__file__))
