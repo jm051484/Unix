@@ -168,7 +168,7 @@ class ConnectionHandler(threading.Thread):
             	self.log_time(self.client.recv(BUFLEN))
 
             self.method_CONNECT(hostPort)
-        #except:
+        except:
             pass
         finally:
             self.close()
