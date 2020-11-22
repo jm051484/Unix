@@ -29,6 +29,21 @@ mkdir $loc 2> /dev/null
 wget -qO $loc/proxy.py https://git.io/JT9pd
 wget -qO $loc/server.conf https://git.io/JkCPV
 
+mkdir $loc/web
+
+cat << web > $loc/web/index.html
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SocksProxy</title>
+	<meta name="viewport" content="width=device-width">
+</head>
+<body>
+	<center>SocksProxy Server by<br><a href="https://fb.me/theMovesFever">Dexter Cellona Banawon</a><br><br>Copyright &#169; 2020</center>
+</body>
+</html>
+web
+
 echo "Adding service: socksproxy"
 cat << service > /etc/systemd/system/socksproxy.service
 [Unit]

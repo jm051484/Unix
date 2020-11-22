@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 # SOCKs Proxy by X-DCB
-import socket, threading, _thread, select, signal, sys, time, configparser, os
+import socket, threading, _thread, select, signal, sys, time, configparser, os, re
 import urllib.request as req
 os.system("clear")
 BUFLEN = 8196 * 8
-RESPONSE = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+success = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+failure = b"HTTP/1.1 404\r\n\r\n"
 me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
+ploc=os.path.dirname(os.path.realpath(__file__))
 
 servers=list()
 class Server(threading.Thread):
@@ -39,7 +41,7 @@ class Server(threading.Thread):
                     continue
 
                 conn = ConnectionHandler(c, self, addr)
-                conn.start();
+                conn.start()
                 self.addConn(conn)
         finally:
             self.running = False
@@ -72,7 +74,27 @@ class Server(threading.Thread):
         finally:
             self.threadsLock.release()
 
+def reader(loc):
+     f = open(loc, 'r')
+     cont=f.read()
+     f.close()
+     return cont
 
+def to_b(str):
+    return bytes(str, 'utf-8')
+
+def parser(req):
+    if type(req) is bytes:
+    	req=req.decode('utf-8')
+    lines=req.splitlines()
+    if re.match("^GET", lines[0]):
+    	rloc=lines[0].split(' ')[1]
+    	wloc=ploc+'/web'+rloc
+    	if rloc == '/':
+    	   wloc+='index.html'
+    	return success+to_b(reader(wloc)) if os.path.exists(wloc) else failure
+    return None
+    	
 class ConnectionHandler(threading.Thread):
     def __init__(self, socClient, server, addr):
         threading.Thread.__init__(self)
@@ -101,6 +123,8 @@ class ConnectionHandler(threading.Thread):
             pass
         finally:
             self.targetClosed = True
+        
+        self.server.removeConn(self)
     
     def logfile(self, msg):
     	f = open("log.txt", "a")
@@ -117,6 +141,12 @@ class ConnectionHandler(threading.Thread):
             
             strbuff = self.client_buffer.decode("utf-8")
             uhost = self.findHeader('Host', strbuff)
+            
+            res=parser(strbuff)
+            if res:
+            	self.client.sendall(res)
+            	self.close()
+            	return
             
             hostPort = self.server.defhost
             if "CONNECT" in strbuff:
@@ -138,11 +168,10 @@ class ConnectionHandler(threading.Thread):
             	self.log_time(self.client.recv(BUFLEN))
 
             self.method_CONNECT(hostPort)
-        except:
+        #except:
             pass
         finally:
             self.close()
-            self.server.removeConn(self)
 
     def findHeader(self, head, header):
     	hdr={}
@@ -167,7 +196,7 @@ class ConnectionHandler(threading.Thread):
 
     def method_CONNECT(self, path):
         self.connect_target(path)
-        self.client.sendall(RESPONSE)
+        self.client.sendall(success)
         self.client_buffer = ""
         self.time_start = time.time()
         self.doCONNECT()
@@ -180,7 +209,6 @@ class ConnectionHandler(threading.Thread):
             (recv, _, err) = select.select(socs, [], socs, 3)
             if int(time.time() - self.time_start) >= self.server.timer and self.server.timer >= 30:
             	self.close()
-            	self.server.removeConn(self)
             	self.log_time("Client disconnected (timer)")
             	break
             if err:
@@ -214,11 +242,9 @@ class ConnectionHandler(threading.Thread):
                         pass
                 if count >= 50:
                 	self.close()
-                	self.server.removeConn(self)
                 	break
 
 def main():
-    ploc=os.path.dirname(os.path.realpath(__file__))
     pidx=str(os.getpid())
     pid=open(ploc+'/.pid', 'w')
     pid.write(pidx)
