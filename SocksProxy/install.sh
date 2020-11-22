@@ -14,6 +14,7 @@ cat << info
    - Server optimization
    - Beta Version
    - UDP Forwading
+   - Static website support
 
 info
 
@@ -29,7 +30,7 @@ mkdir $loc 2> /dev/null
 wget -qO $loc/proxy.py https://git.io/JT9pd
 wget -qO $loc/server.conf https://git.io/JkCPV
 
-mkdir $loc/web
+mkdir $loc/web 2> /dev/null
 
 cat << web > $loc/web/index.html
 <!DOCTYPE html>
@@ -218,8 +219,8 @@ fi
 clear
 cat << info | tee ~/socksproxylog.txt
 
-| New Password for 'root':
-|    $PASS
+`[ $PASS ] && echo -e "| New Password for 'root':
+|    $PASS"`
   ====================================
 | Installation finished.              |
 | Service Name: socksproxy            |
