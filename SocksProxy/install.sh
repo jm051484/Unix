@@ -114,9 +114,18 @@ Expiration Date : `[ $DAYS ] && echo $DAYS || echo "None"`
 
 ~ Server Ports ~
 OHP :
-  - 8888 (40s timer)
-  - 8889 (No timer)
-SSH: 22
+IFS=$'\n' arr=`cat /etc/socksproxy/server.conf`
+for line in $arr; do
+	[ `grep "^sport" <<< "$line"` ] && s=$((line))
+	[ `grep "^timer" <<< "$line"` ] && t=$((line))
+	if [[ $t && $s ]]; then
+		[ $t -ge 30 ] && t+="s" || t="No"
+		echo "   - $s ($t timer)"
+		unset t s
+	fi
+done
+SSH :
+`netstat -tulpn | egrep "tcp .+ssh" | egrep -o ":[0-9]{2,}" | sed -e "s/:/  - /g"`
 info
 exit 0
 }
@@ -199,7 +208,7 @@ cat << info | tee ~/socksproxylog.txt
   ====================================
 | Installation finished.              |
 | Service Name: socksproxy            |
-| Ports: 8888 (40s timer),            |
+| Ports: 8888 (55s timer),            |
 |        8889 (No timer)              |
 | Log output: /root/socksproxylog.txt |
 | =================================== |
