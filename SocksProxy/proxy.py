@@ -127,7 +127,7 @@ class ConnectionHandler(threading.Thread):
         self.server.removeConn(self)
     
     def logfile(self, msg):
-    	f = open("log.txt", "a")
+    	f = open(ploc+"/log.txt", "a")
     	f.write(msg+"\n")
     	f.close()
     
@@ -169,7 +169,7 @@ class ConnectionHandler(threading.Thread):
 
             self.method_CONNECT(hostPort)
         except:
-            pass
+            self.logfile(str(sys.exc_info()[2]))
         finally:
             self.close()
 
@@ -186,7 +186,7 @@ class ConnectionHandler(threading.Thread):
         if i != -1:
             port = int(host[i+1:])
             host = host[:i]
-
+        
         (soc_family, soc_type, proto, _, address) = socket.getaddrinfo(host, port)[0]
 
         self.target = socket.socket(soc_family, soc_type, proto)
@@ -200,7 +200,14 @@ class ConnectionHandler(threading.Thread):
         self.client_buffer = ""
         self.time_start = time.time()
         self.doCONNECT()
-
+    
+    def timer_dc(self):
+    	check=int(time.time() - self.time_start) >= self.server.timer and self.server.timer >= 30
+    	if check:
+    		self.close()
+    		self.log_time("Client disconnected (timer)")
+    	return check
+    
     def doCONNECT(self):
         socs = [self.client, self.target]
         error = False
@@ -229,19 +236,18 @@ class ConnectionHandler(threading.Thread):
                                 while data:
                                     byte = self.target.send(data)
                                     data = data[byte:]
+                                if self.timer_dc():
+                                	break
                         else:
                         	time.sleep(1)
                         	count+=1
                         	break
                     except:
                         count+=1
-            if count >= 50:
+            if count >= 50 or self.timer_dc():
                 self.close()
                 break
-            if int(time.time() - self.time_start) >= self.server.timer and self.server.timer >= 30:
-            	self.close()
-            	self.log_time("Client disconnected (timer)")
-            	break
+            
 
 def main():
     pidx=str(os.getpid())
