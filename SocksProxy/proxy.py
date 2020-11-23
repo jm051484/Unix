@@ -207,10 +207,6 @@ class ConnectionHandler(threading.Thread):
         count=0
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
-            if int(time.time() - self.time_start) >= self.server.timer and self.server.timer >= 30:
-            	self.close()
-            	self.log_time("Client disconnected (timer)")
-            	break
             if err:
                 count+=1
             elif recv:
@@ -242,6 +238,10 @@ class ConnectionHandler(threading.Thread):
             if count >= 50:
                 self.close()
                 break
+            if int(time.time() - self.time_start) >= self.server.timer and self.server.timer >= 30:
+            	self.close()
+            	self.log_time("Client disconnected (timer)")
+            	break
 
 def main():
     pidx=str(os.getpid())
