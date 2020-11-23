@@ -214,6 +214,8 @@ class ConnectionHandler(threading.Thread):
         count=0
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
+            if self.timer_dc():
+            	break
             if err:
                 count+=1
             elif recv:
@@ -244,7 +246,7 @@ class ConnectionHandler(threading.Thread):
                         	break
                     except:
                         count+=1
-            if count >= 50 or self.timer_dc():
+            if count >= 50:
                 self.close()
                 break
             
