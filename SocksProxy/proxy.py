@@ -27,7 +27,7 @@ class Server(threading.Thread):
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
         self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.soc.settimeout(2)
+        self.soc.settimeout(3)
         self.soc.bind((self.host, self.port))
         self.soc.listen(0)
         self.running = True
@@ -36,7 +36,7 @@ class Server(threading.Thread):
             while self.running:
                 try:
                     c, addr = self.soc.accept()
-                    c.setblocking(1)
+                    c.setblocking(3)
                 except socket.timeout:
                     continue
 
@@ -144,7 +144,7 @@ class ConnectionHandler(threading.Thread):
             
             res=parser(strbuff)
             if res:
-            	self.client.sendall(res)
+            	self.client.send(res)
             	self.close()
             	return
             
@@ -196,7 +196,7 @@ class ConnectionHandler(threading.Thread):
 
     def method_CONNECT(self, path):
         self.connect_target(path)
-        self.client.sendall(success)
+        self.client.send(success)
         self.client_buffer = ""
         self.time_start = time.time()
         self.doCONNECT()
@@ -213,8 +213,7 @@ class ConnectionHandler(threading.Thread):
             	break
             if err:
                 count+=1
-                continue
-            if recv:
+            elif recv:
                 for in_ in recv:
                     try:
                         data = in_.recv(BUFLEN)
@@ -239,10 +238,10 @@ class ConnectionHandler(threading.Thread):
                         	count+=1
                         	break
                     except:
-                        pass
-                if count >= 50:
-                	self.close()
-                	break
+                        count+=1
+            if count >= 50:
+                self.close()
+                break
 
 def main():
     pidx=str(os.getpid())
