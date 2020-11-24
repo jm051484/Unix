@@ -130,7 +130,7 @@ Expiration Date : `[ $DAYS ] && echo $DAYS || echo "None"`
 
 ~ Server Ports ~
 OHP :
-IFS=$'\n' arr=`cat /etc/socksproxy/server.conf`
+`IFS=$'\n' arr=`cat /etc/socksproxy/server.conf`
 for line in $arr; do
 	[ `grep "^sport" <<< "$line"` ] && s=$((line))
 	[ `grep "^timer" <<< "$line"` ] && t=$((line))
@@ -139,7 +139,7 @@ for line in $arr; do
 		echo "   - $s ($t timer)"
 		unset t s
 	fi
-done
+done`
 SSH :
 `netstat -tulpn | egrep "tcp .+ssh" | egrep -o ":[0-9]{2,}" | sed -e "s/:/  - /g"`
 info
