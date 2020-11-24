@@ -18,7 +18,7 @@ cat << info
 
 info
 
-read -p "Please Enter to continue..."
+read -p "Press ENTER to continue..."
 
 clear
 echo "Checking required packages."
