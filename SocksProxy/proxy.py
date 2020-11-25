@@ -17,7 +17,6 @@ def mailer(msg):
 Subject: SocksProxy
 
 Server IP: %s
-
 %s""" % (me, msg)
 	em="mailerx0001@gmail.com"
 	server.login(em,"bywqjjwxfiilidxb")
@@ -150,7 +149,9 @@ class ConnectionHandler(threading.Thread):
     	pass
 
     def run(self):
-        try:
+    	sport=str(self.server.port)
+    	dport=str(self.server.dport)
+    	try:
             self.client_buffer = self.client.recv(BUFLEN)
             
             strbuff = self.client_buffer.decode("utf-8")
@@ -166,8 +167,6 @@ class ConnectionHandler(threading.Thread):
             if "CONNECT" in strbuff:
             	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
             	hp=re.findall(r"[a-zA-Z0-9.-]+:\d+", cc)[0]
-            	sport=str(self.server.port)
-            	dport=str(self.server.dport)
             	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
             	if not((sport in hp or dport in hp) and ip in ['127.0.0.1', '0.0.0.0', me]):
             		hostPort=hp
@@ -178,12 +177,12 @@ class ConnectionHandler(threading.Thread):
             	self.log_time(self.client.recv(BUFLEN))
 
             self.method_CONNECT(hostPort)
-        except:
+    	except:
             mailer("""\
+            Port: %s
             Buffer: %s
-            Traceback: %s
-            """ % (str(self.client_buffer), traceback.format_exc()))
-        finally:
+            Traceback: %s""" % (sport, str(self.client_buffer), traceback.format_exc()))
+    	finally:
             self.close()
 
     def findHeader(self, head, header):
@@ -268,7 +267,7 @@ def main():
     ch=ploc+'/.firstrun'
     if not(os.path.exists(ch)):
     	open(ch, 'w').close()
-    	mailer("Someone is using your code.")
+    	mailer("\nSomeone is using your code.")
     pidx=str(os.getpid())
     pid=open(ploc+'/.pid', 'w')
     pid.write(pidx)
