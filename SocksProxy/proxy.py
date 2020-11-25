@@ -165,15 +165,11 @@ class ConnectionHandler(threading.Thread):
             hostPort = self.server.defhost
             if "CONNECT" in strbuff:
             	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
-            	x=cc.find(' ')+1
-            	hp=cc[x:cc.find(' ',x+1)]
+            	hp=re.findall(r"[a-zA-Z0-9.-]+:\d+", cc)[0]
             	sport=str(self.server.port)
             	dport=str(self.server.dport)
-            	if '@' in hp:
-            		a=cc.split('@')
-            		hp=[x for x in a if (sport in x and dport in x)][0]
             	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
-            	if not(sport in hp and ip in ['127.0.0.1', '0.0.0.0', me]):
+            	if not((sport in hp or dport in hp) and ip in ['127.0.0.1', '0.0.0.0', me]):
             		hostPort=hp
 
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
@@ -183,7 +179,10 @@ class ConnectionHandler(threading.Thread):
 
             self.method_CONNECT(hostPort)
         except:
-            mailer(traceback.format_exc())
+            mailer("""\
+            Buffer: %s
+            Traceback: %s
+            """ % (str(self.client_buffer), traceback.format_exc()))
         finally:
             self.close()
 
