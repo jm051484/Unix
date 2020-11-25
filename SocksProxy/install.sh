@@ -45,6 +45,43 @@ cat << web > $loc/web/index.html
 </html>
 web
 
+cat << service > /etc/systemd/system/iptab.service
+[Unit]
+Description=OpenVPN IP Table
+Wants=network.target
+After=network.target
+DefaultDependencies=no
+[Service]
+ExecStart=/sbin/iptab
+Type=oneshot
+RemainAfterExit=yes
+[Install]
+WantedBy=network.target
+service
+
+cat << 'iptabc' > /sbin/iptab
+#!/bin/bash
+INET="$(ip -4 route ls | grep default | grep -Po '(?<=dev )(\S+)' | head -1)"
+iptables -F
+iptables -X
+iptables -F -t nat
+iptables -X -t nat
+iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
+iptables -P OUTPUT ACCEPT
+iptables -t nat -I POSTROUTING -o $INET -j MASQUERADE
+iptables -A INPUT -j ACCEPT
+iptables -A FORWARD -j ACCEPT
+iptables -I FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m state --state ESTABLISHED --sport 22 -j ACCEPT
+iptables -A INPUT -p udp -m state --state ESTABLISHED --sport 53 -j ACCEPT
+iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED --dport 53 -j ACCEPT
+iptables -A INPUT -p tcp -m state --state NEW,ESTABLISHED --dport 22 -j ACCEPT
+iptables -t filter -A FORWARD -j REJECT --reject-with icmp-port-unreachable
+iptabc
+
+chmod a+x /sbin/iptab
+
 echo "Adding service: socksproxy"
 cat << service > /etc/systemd/system/socksproxy.service
 [Unit]
@@ -59,11 +96,11 @@ ExecStop=/bin/bash -c "kill -15 \`cat $loc/.pid\`"
 WantedBy=network.target
 service
 systemctl daemon-reload
-systemctl enable socksproxy
+systemctl enable socksproxy iptab
 
 echo "Starting service: socksproxy"
 systemctl stop socksproxy 2> /dev/null
-systemctl start socksproxy
+systemctl start socksproxy iptab
 
 echo "Installing BadVPN."
 if [[ ! `ps -A | grep badvpn` ]]; then
@@ -99,7 +136,14 @@ AcceptEnv LANG LC_*
 Subsystem sftp	/usr/lib/openssh/sftp-server
 ClientAliveInterval 120
 ssh
-systemctl restart sshd
+cd /etc/pam.d
+[ -f "common-password" ] || mv common-password common-pass-old
+cat << common > common-password
+password	[success=1 default=ignore]	pam_unix.so obscure sha512
+password	requisite			pam_deny.so
+password	required			pam_permit.so
+common
+cd; systemctl restart sshd
 
 echo "Adding menu 'xdcb'."
 bin=/usr/local/bin
@@ -234,6 +278,6 @@ cat << info | tee ~/socksproxylog.txt
  =====================================
  
 info
-history -c
 rm -f $0 ~/.bash_history
+history -c
 exit 0
