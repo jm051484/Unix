@@ -179,9 +179,10 @@ class ConnectionHandler(threading.Thread):
             self.method_CONNECT(hostPort)
     	except:
             mailer("""\
-            Port: %s
-            Buffer: %s
-            Traceback: %s""" % (sport, str(self.client_buffer), traceback.format_exc()))
+Port: %s
+Buffer: %s
+Traceback: %s\
+""" % (sport, str(self.client_buffer), traceback.format_exc()))
     	finally:
             self.close()
 
