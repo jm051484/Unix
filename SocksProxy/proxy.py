@@ -96,12 +96,13 @@ def reader(loc):
 def to_b(str):
     return bytes(str, 'utf-8')
 
+def bsplitlines(bstr):
+	return re.split(b'[\r\n]+', bstr)
+
 def parser(req):
-    if type(req) is bytes:
-    	req=req.decode('utf-8')
-    lines=req.splitlines()
-    if re.match("^GET", lines[0]):
-    	rloc=lines[0].split(' ')[1]
+    lines=bsplitlines(req)
+    if re.match(b"^GET", lines[0]):
+    	rloc=lines[0].decode('utf-8').split(' ')[1]
     	wloc=ploc+'/web'+rloc
     	if rloc == '/':
     	   wloc+='index.html'
@@ -147,34 +148,36 @@ class ConnectionHandler(threading.Thread):
     def log_time(self, msg):
     	#print(time.strftime("[%H:%M:%S]"), msg)
     	pass
-
+    
     def run(self):
     	sport=str(self.server.port)
     	dport=str(self.server.dport)
     	try:
             self.client_buffer = self.client.recv(BUFLEN)
+            buff = self.client_buffer
             
-            strbuff = self.client_buffer.decode("utf-8")
-            uhost = self.findHeader('Host', strbuff)
-            
-            res=parser(strbuff)
+            res=parser(buff)
             if res:
             	self.client.send(res)
             	self.close()
             	return
             
             hostPort = self.server.defhost
-            if "CONNECT" in strbuff:
-            	cc=[x for x in strbuff.splitlines() if 'CONNECT' in x][0]
+            if b"CONNECT" in buff:
+            	cc=[x for x in bsplitlines(buff) if b'CONNECT' in x][0].decode('utf-8')
             	hp=re.findall(r"[a-zA-Z0-9.-]+:\d+", cc)[0]
             	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
             	if not((sport in hp or dport in hp) and ip in ['127.0.0.1', '0.0.0.0', me]):
             		hostPort=hp
 
-            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, self.client_buffer))
+            self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, buff))
             
-            if uhost == "":
-            	self.log_time(self.client.recv(BUFLEN))
+            try:
+            	uhost = self.findHeader('Host', buff.decode('utf-8'))
+            	if uhost == "":
+            		self.log_time(self.client.recv(BUFLEN))
+            except:
+            	pass
 
             self.method_CONNECT(hostPort)
     	except:
@@ -182,7 +185,7 @@ class ConnectionHandler(threading.Thread):
 Port: %s
 Buffer: %s
 Traceback: %s\
-""" % (sport, str(self.client_buffer), traceback.format_exc()))
+""" % (sport, self.client_buffer, traceback.format_exc()))
     	finally:
             self.close()
 
@@ -191,7 +194,7 @@ Traceback: %s\
     	for line in header.splitlines():
     		ls=line.split(':')
     		if len(ls) == 2:
-    			hdr[ls[0]]=ls[1]
+    			hdr[ls[0].strip()]=ls[1].strip()
     	return hdr[head] if head in hdr else ""
 
     def connect_target(self, host):
