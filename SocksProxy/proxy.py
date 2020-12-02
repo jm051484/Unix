@@ -4,7 +4,7 @@
 import socket, threading, _thread, select, signal, sys, time, configparser, os, re, smtplib, traceback
 import urllib.request as req
 os.system("clear")
-BUFLEN = 8196 * 8
+recvbuff = 65536
 success = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
 failure = b"HTTP/1.1 404\r\n\r\n"
 me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
@@ -40,6 +40,7 @@ class Server(threading.Thread):
     def run(self):
         self.soc = socket.socket(socket.AF_INET)
         self.soc.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.soc.setsockopt(socket.SOL_SOCKET, socket.TCP_NODELAY, 1)
         self.soc.settimeout(3)
         self.soc.bind((self.host, self.port))
         self.soc.listen(0)
@@ -49,6 +50,7 @@ class Server(threading.Thread):
             while self.running:
                 try:
                     c, addr = self.soc.accept()
+                    c.setsockopt(socket.SOL_SOCKET, socket.TCP_NODELAY, 1)
                     c.setblocking(3)
                 except socket.timeout:
                     continue
@@ -153,7 +155,7 @@ class ConnectionHandler(threading.Thread):
     	sport=str(self.server.port)
     	dport=str(self.server.dport)
     	try:
-            self.client_buffer = self.client.recv(BUFLEN)
+            self.client_buffer = self.client.recv(recvbuff)
             buff = self.client_buffer
             
             res=parser(buff)
@@ -175,7 +177,7 @@ class ConnectionHandler(threading.Thread):
             try:
             	uhost = self.findHeader('Host', buff.decode('utf-8'))
             	if uhost == "":
-            		self.log_time(self.client.recv(BUFLEN))
+            		self.log_time(self.client.recv(recvbuff))
             except:
             	pass
 
@@ -206,6 +208,7 @@ Traceback: %s\
         (soc_family, soc_type, proto, _, address) = socket.getaddrinfo(host, port)[0]
 
         self.target = socket.socket(soc_family, soc_type, proto)
+        self.target.setsockopt(socket.SOL_SOCKET, socket.TCP_NODELAY, 1)
         self.targetClosed = False
         self.target.connect(address)
         self.t_addr = address
@@ -230,14 +233,16 @@ Traceback: %s\
         count=0
         while True:
             (recv, _, err) = select.select(socs, [], socs, 3)
-            if self.timer_dc():
-            	break
+            if count >= 50 or self.timer_dc():
+                self.close()
+                break
             if err:
                 count+=1
+                time.sleep(1)
             elif recv:
                 for in_ in recv:
                     try:
-                        data = in_.recv(BUFLEN)
+                        data = in_.recv(recvbuff)
                         if data:
                             count=0
                             if in_ is self.target:
@@ -262,9 +267,7 @@ Traceback: %s\
                         	break
                     except:
                         count+=1
-            if count >= 50:
-                self.close()
-                break
+            
             
 
 def main():
