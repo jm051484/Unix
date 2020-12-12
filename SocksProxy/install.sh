@@ -115,8 +115,8 @@ echo "Installing BadVPN."
 if [[ ! `ps -A | grep badvpn` ]]; then
 if [[ ! `type -P docker` ]]; then
 apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
-curl -fsSL https://download.docker.com/linux/$VERSION_ID/gpg | apt-key add - 
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$VERSION_ID $(lsb_release -cs) stable"
+curl -fsSL https://download.docker.com/linux/$ID/gpg | apt-key add - 
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$ID $(lsb_release -cs) stable"
 apt update
 apt-cache policy docker-ce
 apt install docker-ce -y
