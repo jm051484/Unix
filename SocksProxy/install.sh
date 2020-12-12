@@ -1,5 +1,13 @@
 #!/bin/bash
 clear
+export DEBIAN_FRONTEND=noninteractive
+if [ "$(id -u)" -ne 0 ]; then
+  echo -ne "\nPlease execute this script as root.\n"
+  exit 1; fi
+if [ ! -f /etc/debian* ]; then
+  echo -ne "\nFor DEBIAN and UBUNTU only.\n"
+  exit 1; fi
+
 cat << info
 
  ==================================
@@ -21,6 +29,7 @@ info
 read -p "Press ENTER to continue..."
 
 clear
+. /etc/os-release
 echo "Checking required packages."
 [ `type -P python3` ] || apt-get -y install python3
 
@@ -106,8 +115,8 @@ echo "Installing BadVPN."
 if [[ ! `ps -A | grep badvpn` ]]; then
 if [[ ! `type -P docker` ]]; then
 apt install apt-transport-https ca-certificates curl gnupg2 software-properties-common -y
-curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - 
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+curl -fsSL https://download.docker.com/linux/$VERSION_ID/gpg | apt-key add - 
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$VERSION_ID $(lsb_release -cs) stable"
 apt update
 apt-cache policy docker-ce
 apt install docker-ce -y
