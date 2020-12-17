@@ -102,14 +102,16 @@ def bsplitlines(bstr):
 	return re.split(b'[\r\n]+', bstr)
 
 def parser(req):
-    lines=bsplitlines(req)
-    if re.match(b"^GET", lines[0]):
-    	rloc=lines[0].decode('utf-8').split(' ')[1]
-    	wloc=ploc+'/web'+rloc
-    	if rloc == '/':
-    	   wloc+='index.html'
-    	return success+to_b(reader(wloc)) if os.path.exists(wloc) else failure
-    return None
+    try:
+        lines=bsplitlines(req)
+        if re.match(b"^GET", lines[0]):
+        	rloc=lines[0].decode('utf-8').split(' ')[1]
+        	wloc=ploc+'/web'+rloc
+        	if rloc == '/':
+        	   wloc+='index.html'
+        	return success+to_b(reader(wloc)) if os.path.exists(wloc) else failure
+    finally:
+        return None
     	
 class ConnectionHandler(threading.Thread):
     def __init__(self, socClient, server, addr):
@@ -165,13 +167,6 @@ class ConnectionHandler(threading.Thread):
             	return
             
             hostPort = self.server.defhost
-            if b"CONNECT" in buff:
-            	cc=[x for x in bsplitlines(buff) if b'CONNECT' in x][0].decode('utf-8')
-            	hp=re.findall(r"[a-zA-Z0-9.-]+:\d+", cc)[0]
-            	ip = socket.getaddrinfo(hp[0:hp.find(':')], 80)[0][4][0]
-            	if not((sport in hp or dport in hp) and ip in ['127.0.0.1', '0.0.0.0', me]):
-            		hostPort=hp
-
             self.log_time("client: %s - server: %s - buff: %s" % (self.cl_addr, hostPort, buff))
             
             try:
