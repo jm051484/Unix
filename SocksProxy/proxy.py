@@ -5,7 +5,8 @@ import socket, threading, _thread, select, signal, sys, time, configparser, os, 
 import urllib.request as req
 os.system("clear")
 recvbuff = 65536
-success = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+#success = b"HTTP/1.1 200 <font color=\"green\">Dexter Cellona Banawon (X-DCB)</font>\r\n\r\n"
+success = b"HTTP/1.1 200\r\n\r\n"
 failure = b"HTTP/1.1 404\r\n\r\n"
 me=req.urlopen("http://ipv4.icanhazip.com/").read().decode("utf-8").strip()
 ploc=os.path.dirname(os.path.realpath(__file__))
